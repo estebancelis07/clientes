@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework Implementativo — Víctor Arroyo</title>
+<style>
+  :root {
+    --ink:#0d0c0b;--cream:#f5f2ed;--off:#faf8f5;
+    --gold:#b8943e;--gp:#f7f0e0;--gl:rgba(184,148,62,.18);
+    --red:#a83228;--rp:#faf0ee;
+    --green:#1d6645;--gre:#ebf5f0;
+    --blue:#1c3d5e;--blp:#e9eff6;
+    --g1:#3a3530;--g2:#6b6560;--g3:#b0aba4;--bd:#e2ddd6;
+    --f:-apple-system,"SF Pro Text",BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+    --fd:-apple-system,"SF Pro Display",BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--cream);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:var(--ink);display:flex;align-items:stretch}
+  .nav-logo{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);padding:0 28px;display:flex;align-items:center;border-right:1px solid rgba(255,255,255,.07);white-space:nowrap}
+  .nav-links{display:flex;overflow-x:auto}
+  .nav-links a{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-decoration:none;padding:16px 18px;white-space:nowrap;transition:color .2s;border-right:1px solid rgba(255,255,255,.05)}
+  .nav-links a:hover{color:var(--gold)}
+
+  /* COVER */
+  .cover{background:var(--ink);min-height:100vh;display:grid;grid-template-rows:1fr auto;position:relative;overflow:hidden}
+  .cover-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none}
+  .c-glow{position:absolute;top:-150px;right:-150px;width:500px;height:500px;background:radial-gradient(circle,rgba(184,148,62,.08) 0%,transparent 65%);pointer-events:none}
+  .c-inner{display:flex;flex-direction:column;justify-content:flex-end;padding:80px 80px;position:relative;z-index:1}
+  .c-line{width:32px;height:1px;background:var(--gold);margin-bottom:24px}
+  .c-eye{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:28px}
+  .cover h1{font-family:var(--fd);font-size:clamp(44px,6.5vw,82px);font-weight:200;line-height:1.05;letter-spacing:-.035em;color:#fff;margin-bottom:22px}
+  .cover h1 strong{font-weight:600}
+  .cover h1 span{color:rgba(232,213,163,.7)}
+  .c-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,.36);max-width:400px;line-height:1.6;margin-bottom:60px;letter-spacing:-.01em}
+  .c-stats{display:flex;border-top:1px solid rgba(255,255,255,.07);padding:22px 80px;position:relative;z-index:1}
+  .cst{flex:1;padding-right:24px;border-right:1px solid rgba(255,255,255,.07)}
+  .cst:not(:first-child){padding-left:24px}
+  .cst:last-child{border-right:none}
+  .cst label{display:block;font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  .cst span{font-size:12px;font-weight:300;color:rgba(255,255,255,.42)}
+
+  /* STEP BAND */
+  .band{background:var(--ink);padding:44px 72px;position:relative;overflow:hidden}
+  .band::before{content:'';position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(184,148,62,.08) 0%,transparent 65%);pointer-events:none}
+  .band-eye{font-size:9.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .band h2{font-family:var(--fd);font-size:clamp(22px,3vw,34px);font-weight:200;letter-spacing:-.03em;color:#fff;line-height:1.12}
+  .band h2 strong{font-weight:600}
+  .band-body{background:var(--off);border:1px solid var(--bd);border-top:none;padding:44px 52px}
+
+  hr.rule{border:none;border-top:1px solid var(--bd);margin:0}
+  .inner-rule{border:none;border-top:1px solid var(--bd);margin:32px 0}
+
+  /* LABELS */
+  .sl{font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+  .sl::after{content:'';flex:1;height:1px;background:var(--bd)}
+  .sh{font-family:var(--fd);font-size:19px;font-weight:500;letter-spacing:-.02em;color:var(--ink);margin-bottom:12px;line-height:1.25}
+  .bt{font-size:14px;font-weight:400;letter-spacing:-.005em;color:var(--g1);line-height:1.75;margin-bottom:18px}
+  .bt strong{font-weight:600;color:var(--ink)}
+
+  /* TAG */
+  .tag{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:3px 7px;white-space:nowrap;flex-shrink:0}
+  .tag.kill{background:var(--rp);color:var(--red)}
+  .tag.sig{background:var(--gp);color:#9a7a2c}
+  .tag.gate{background:var(--blp);color:var(--blue)}
+
+  /* FORM QUESTIONS */
+  .fq-list{display:flex;flex-direction:column;gap:1px;background:var(--bd);border:1px solid var(--bd);margin-top:14px}
+  .fq{background:var(--off);display:grid;grid-template-columns:18px 1fr auto;gap:0 12px;padding:16px 18px;align-items:start;transition:background .2s}
+  .fq:hover{background:#fff}
+  .fq-n{font-family:var(--fd);font-size:12px;font-weight:200;color:var(--gold);padding-top:2px}
+  .fq h4{font-size:13.5px;font-weight:600;letter-spacing:-.01em;color:var(--ink);margin-bottom:3px;line-height:1.35}
+  .fq p{font-size:12.5px;font-weight:400;color:var(--g2);line-height:1.55}
+  .fq .opts{font-size:12px;font-weight:400;color:var(--g3);margin-top:3px;font-style:italic}
+
+  /* FILTER */
+  .filter{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--bd);border:1px solid var(--bd);margin-top:14px}
+  .fc{background:var(--off)}
+  .fc-h{padding:11px 16px;font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--bd)}
+  .fc.yes .fc-h{color:var(--green);background:var(--gre)}
+  .fc.no  .fc-h{color:var(--red);background:var(--rp)}
+  .fc ul{list-style:none;padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+  .fc li{font-size:13px;font-weight:400;color:var(--g1);line-height:1.45;padding-left:14px;position:relative}
+  .fc.yes li::before{content:'✓';position:absolute;left:0;color:var(--green);font-weight:700;font-size:10px;top:2px}
+  .fc.no  li::before{content:'✗';position:absolute;left:0;color:var(--red);font-weight:700;font-size:10px;top:2px}
+
+  /* CHECKLIST */
+  .ck{display:flex;flex-direction:column;gap:1px;background:var(--bd);border:1px solid var(--bd);margin-top:14px}
+  .cki{background:var(--off);display:flex;gap:11px;padding:16px 18px;transition:background .2s;align-items:flex-start}
+  .cki:hover{background:#fff}
+  .cki-box{width:15px;height:15px;border:1.5px solid var(--bd);border-radius:3px;flex-shrink:0;background:#fff;margin-top:2px}
+  .cki h4{font-size:13.5px;font-weight:600;letter-spacing:-.01em;color:var(--ink);margin-bottom:2px;line-height:1.35}
+  .cki p{font-size:12.5px;font-weight:400;color:var(--g2);line-height:1.5}
+
+  /* SCRIPT */
+  .script{background:var(--ink);padding:18px 22px;margin:10px 0}
+  .sc-label{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+  .script p{font-size:13px;font-weight:300;font-style:italic;color:rgba(255,255,255,.72);line-height:1.72;letter-spacing:-.005em}
+  .script p strong{font-style:normal;font-weight:600;color:rgba(255,255,255,.92)}
+
+  /* CALLOUT */
+  .co{padding:20px 24px;margin:14px 0;border-left:2px solid var(--gold);background:var(--gp)}
+  .co.red{border-color:var(--red);background:var(--rp)}
+  .co.green{border-color:var(--green);background:var(--gre)}
+  .co.blue{border-color:var(--blue);background:var(--blp)}
+  .co-ey{font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+  .co.red .co-ey{color:var(--red)}.co.green .co-ey{color:var(--green)}.co.blue .co-ey{color:var(--blue)}
+  .co-t{font-family:var(--fd);font-size:16px;font-weight:500;letter-spacing:-.02em;color:var(--ink);margin-bottom:7px;line-height:1.3}
+  .co p{font-size:13.5px;font-weight:400;color:var(--g1);line-height:1.75}
+  .co ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:6px}
+  .co li{font-size:13px;font-weight:400;color:var(--g1);line-height:1.6;padding-left:14px;position:relative}
+  .co li::before{content:'–';position:absolute;left:0;color:var(--gold);font-weight:500}
+  .co.red li::before{color:var(--red)}.co.green li::before{color:var(--green)}.co.blue li::before{color:var(--blue)}
+
+  /* CLOSER */
+  .closer{display:flex;flex-direction:column;gap:1px;background:var(--bd);border:1px solid var(--bd)}
+  .cs{background:var(--off);display:grid;grid-template-columns:58px 1fr;transition:background .2s}
+  .cs:hover{background:#fff}
+  .cs-l{background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:22px 0 0}
+  .cs-l .lt{font-family:var(--fd);font-size:30px;font-weight:100;letter-spacing:-.04em;color:var(--gold);line-height:1}
+  .cs-l .mn{font-size:8.5px;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.03em;text-align:center;padding:0 4px;line-height:1.35;margin-top:5px}
+  .cs-c{padding:20px 22px}
+  .cs-tag{font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  .cs-t{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--ink);margin-bottom:7px;line-height:1.3}
+  .cs-d{font-size:13px;font-weight:400;color:var(--g2);line-height:1.65;margin-bottom:8px}
+  .cs-b{list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:8px}
+  .cs-b li{font-size:13px;font-weight:400;color:var(--g1);padding-left:14px;position:relative;line-height:1.5}
+  .cs-b li::before{content:'→';position:absolute;left:0;color:var(--gold);font-size:10px;top:3px}
+
+  /* OBJECTIONS */
+  .obj-list{display:flex;flex-direction:column;gap:1px;background:var(--bd);border:1px solid var(--bd)}
+  .obj{background:var(--off)}
+  .obj-h{display:grid;grid-template-columns:46px 1fr;background:var(--ink);align-items:center}
+  .obj-n{font-family:var(--fd);font-size:18px;font-weight:200;color:var(--gold);text-align:center;padding:14px 0;border-right:1px solid rgba(255,255,255,.06);letter-spacing:-.02em}
+  .obj-q{font-size:13px;font-weight:300;font-style:italic;color:rgba(255,255,255,.58);padding:14px 18px;line-height:1.4}
+  .obj-b{padding:16px 18px 16px calc(46px + 18px)}
+  .obj-lbl{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+  .obj-diag{font-size:10.5px;font-weight:600;color:var(--g3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+  .obj-b p{font-size:13.5px;font-weight:400;color:var(--g1);line-height:1.75}
+
+  /* VERDICT */
+  .verdict{background:var(--ink);padding:52px 72px;position:relative;overflow:hidden}
+  .verdict::before{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(184,148,62,.07) 0%,transparent 65%)}
+  .v-ey{font-size:9.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .v-t{font-family:var(--fd);font-size:clamp(20px,2.5vw,30px);font-weight:200;letter-spacing:-.03em;color:#fff;line-height:1.15;margin-bottom:28px}
+  .v-t strong{font-weight:600}
+  .v-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05)}
+  @media(max-width:640px){.v-grid,.filter{grid-template-columns:1fr 1fr}}
+  @media(max-width:420px){.v-grid,.filter{grid-template-columns:1fr}}
+  .vp{padding:24px 20px;background:rgba(255,255,255,.02)}
+  .vp-n{font-family:var(--fd);font-size:32px;font-weight:100;color:rgba(184,148,62,.2);letter-spacing:-.04em;line-height:1;margin-bottom:8px}
+  .vp h4{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.72);margin-bottom:5px;line-height:1.35}
+  .vp p{font-size:11.5px;font-weight:300;color:rgba(255,255,255,.32);line-height:1.6}
+
+  footer{text-align:center;padding:44px 0 60px;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--g3)}
+
+  /* REVEAL */
+  .r{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease}
+  .r.show{opacity:1;transform:translateY(0)}
+  @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .c-line{animation:up .5s ease .1s both}
+  .c-eye{animation:up .5s ease .2s both}
+  .cover h1{animation:up .6s ease .3s both}
+  .c-sub{animation:up .5s ease .45s both}
+  .c-stats{animation:up .5s ease .58s both}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Víctor Arroyo · Framework</div>
+  <div class="nav-links">
+    <a href="#p1">01 · Formulario</a>
+    <a href="#p2">02 · Página de Gracias</a>
+    <a href="#p3">03 · Llamada de Venta</a>
+    <a href="#p4">04 · Objeciones</a>
+  </div>
+</nav>
+
+<div class="cover">
+  <div class="cover-noise"></div>
+  <div class="c-glow"></div>
+  <div class="c-inner">
+    <div class="c-line"></div>
+    <div class="c-eye">Sistema de Conversión · Implementación Directa · 2025</div>
+    <h1><strong>Framework</strong><br><span>Paso a Paso</span><br><strong>Víctor Arroyo</strong></h1>
+    <p class="c-sub">Sin teoría. Sin relleno. Solo lo que hay que hacer, en el orden en que hay que hacerlo.</p>
+  </div>
+  <div class="c-stats">
+    <div class="cst"><label>Pasos</label><span>4 fases implementativas</span></div>
+    <div class="cst"><label>Metodología</label><span>C.L.O.S.E.R. · Hormozi</span></div>
+    <div class="cst"><label>Formato</label><span>Estructura + guión listo para usar</span></div>
+    <div class="cst"><label>Objetivo</label><span>Eliminar leads no calificados y "lo pienso"</span></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════
+     PASO 1: FORMULARIO
+═══════════════════════════════ -->
+<div id="p1">
+  <div class="band r">
+    <div class="band-eye">Paso 01 — Post VSL</div>
+    <h2><strong>Formulario</strong> de Pre-Calificación</h2>
+  </div>
+  <div class="band-body">
+
+    <p class="bt r"><strong>Regla:</strong> Quien no pase este formulario no llega a llamada con Víctor. Va a nurturing automatizado.</p>
+
+    <div class="sl r">6 preguntas · 3 kill questions · ~2 minutos</div>
+    <div class="fq-list r">
+      <div class="fq">
+        <div class="fq-n">01</div>
+        <div>
+          <h4>¿Cuánto capital tienes disponible hoy para invertir?</h4>
+          <div class="opts">Menos de $15k · $15k–$30k · $30k–$60k · $60k–$100k · Más de $100k</div>
+          <p>Menos de $15k → página "aún no eres candidato" con recursos. No pasa.</p>
+        </div>
+        <div class="tag kill">Kill</div>
+      </div>
+      <div class="fq">
+        <div class="fq-n">02</div>
+        <div>
+          <h4>¿Tienes residencia, ciudadanía o entidad legal activa en EE.UU.?</h4>
+          <div class="opts">Ciudadano · Residente permanente · Tengo LLC activa · No tengo nada</div>
+          <p>Sin entidad → guía para abrir LLC antes de agendar.</p>
+        </div>
+        <div class="tag kill">Kill</div>
+      </div>
+      <div class="fq">
+        <div class="fq-n">03</div>
+        <div>
+          <h4>¿Qué te motivó a agendar esta llamada hoy, específicamente hoy?</h4>
+          <p>Campo libre. Revela el evento detonante. Respuesta vaga = lead frío. Específica = lead caliente. Víctor lee esto antes de la llamada.</p>
+        </div>
+        <div class="tag sig">Señal</div>
+      </div>
+      <div class="fq">
+        <div class="fq-n">04</div>
+        <div>
+          <h4>¿Has intentado antes invertir en bienes raíces? ¿Qué pasó?</h4>
+          <p>Campo libre. Fracasos previos = mayor urgencia emocional. Usar en la fase O del C.L.O.S.E.R.</p>
+        </div>
+        <div class="tag sig">Señal</div>
+      </div>
+      <div class="fq">
+        <div class="fq-n">05</div>
+        <div>
+          <h4>Si encuentras el sistema correcto, ¿puedes tomar una decisión esta semana?</h4>
+          <div class="opts">Sí · Necesito hablar con mi pareja · Necesito revisar finanzas · Solo estoy explorando</div>
+          <p>Opciones 3 y 4 → nurturing, no llamada. Opciones 1 y 2 → pasa.</p>
+        </div>
+        <div class="tag kill">Gate</div>
+      </div>
+      <div class="fq">
+        <div class="fq-n">06</div>
+        <div>
+          <h4>¿Cuál es tu meta financiera específica en los próximos 12 meses?</h4>
+          <p>Campo libre. Meta vaga = no está listo. Meta precisa ("generar $50k extra para dejar mi trabajo") = lead A+.</p>
+        </div>
+        <div class="tag gate">Diagnóstico</div>
+      </div>
+    </div>
+
+    <div class="inner-rule r"></div>
+    <div class="sl r">Quién entra · Quién no entra</div>
+    <div class="filter r">
+      <div class="fc yes">
+        <div class="fc-h">✓ Llamada con Víctor</div>
+        <ul>
+          <li>Capital ≥ $30,000</li>
+          <li>Tiene entidad legal o es residente/ciudadano</li>
+          <li>Detonante específico y articulado</li>
+          <li>Puede decidir esta semana</li>
+          <li>Meta financiera concreta</li>
+          <li>45 minutos disponibles</li>
+        </ul>
+      </div>
+      <div class="fc no">
+        <div class="fc-h">✗ Va a nurturing</div>
+        <ul>
+          <li>Capital menor a $15,000</li>
+          <li>Sin entidad y extranjero sin LLC</li>
+          <li>Detonante vago o "explorando"</li>
+          <li>No puede decidir en 30 días</li>
+          <li>Meta inexistente o muy vaga</li>
+          <li>Menos de 30 minutos disponibles</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="rule">
+
+
+<!-- ═══════════════════════════════
+     PASO 2: PÁGINA DE GRACIAS
+═══════════════════════════════ -->
+<div id="p2">
+  <div class="band r">
+    <div class="band-eye">Paso 02 — Post Formulario</div>
+    <h2><strong>Página de Gracias</strong> + Activos Pre-Llamada</h2>
+  </div>
+  <div class="band-body">
+
+    <p class="bt r">Esta página no es una confirmación — es la primera venta. El prospecto está en el pico de su interés. Un prospecto bien preparado cierra 3x más que uno que llegó en frío.</p>
+
+    <div class="sl r">Estructura — 5 componentes obligatorios</div>
+    <div class="ck r">
+      <div class="cki"><div class="cki-box"></div><div><h4>① Video de confirmación de Víctor (2–3 min)</h4><p>En cámara, directo, sin teleprompter. Se graba una vez, funciona para siempre.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>② Caso de estudio en PDF (1 página)</h4><p>Un proyecto real con números concretos. No promedios, no proyecciones.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>③ Checklist "Qué tener listo para la llamada"</h4><p>4 puntos que el prospecto debe completar antes de conectarse.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>④ Testimonial en video (60–90 seg)</h4><p>Cliente con perfil similar. Antes/después con números reales.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>⑤ Secuencia de recordatorios — 24h · 2h · 15 min</h4><p>Cada recordatorio entrega algo útil. No solo "recuerda tu llamada".</p></div></div>
+    </div>
+
+    <div class="inner-rule r"></div>
+    <div class="sl r">Guión — Video de confirmación</div>
+    <div class="script r">
+      <div class="sc-label">Víctor en cámara · 2–3 minutos · Sin edición compleja</div>
+      <p>"Hola [nombre], soy Víctor. Acabas de agendar tu llamada y quiero darte la bienvenida personalmente.<br><br>
+      <strong>Primero, quiero ser directo contigo:</strong> en esta llamada no te voy a vender nada. Lo que voy a hacer es entender exactamente dónde estás, qué quieres lograr, y si lo que hacemos tiene sentido para tu situación específica. Si sí, te explico cómo trabajamos. Si no, te vas con claridad total de cuál sería tu siguiente paso correcto.<br><br>
+      <strong>Para que esta llamada valga tu tiempo — y el mío —</strong> necesito que hagas tres cosas antes de conectarte: que tengas a mano el monto exacto de capital que tienes disponible hoy, que si tienes pareja estén juntos en la llamada, y que tengas 45 minutos sin interrupciones.<br><br>
+      Abajo te dejé un caso de estudio real de un proyecto que terminamos. No es un promedio ni una proyección — son los números reales. Léelo antes de la llamada.<br><br>
+      Nos vemos el [día] a las [hora]. Estoy listo."</p>
+    </div>
+
+    <div class="inner-rule r"></div>
+    <div class="sl r">PDF — Estructura del caso de estudio</div>
+    <div class="ck r">
+      <div class="cki"><div class="cki-box"></div><div><h4>Nombre del proyecto + zona específica</h4><p>Ej: "Proyecto Ocala NW — Marion County, Florida"</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>Tabla de números completos</h4><p>Costo terreno · Costo construcción · Permisos · Total invertido · Precio de venta · Ganancia neta · Meses</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>Foto: terreno vacío → casa terminada</h4><p>Simple y contundente.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>Línea de verificación</h4><p>"Este proyecto está en registros públicos del Condado de [X]. Puedes verificarlo en [link]."</p></div></div>
+    </div>
+
+    <div class="inner-rule r"></div>
+    <div class="sl r">Checklist para el prospecto</div>
+    <div class="ck r">
+      <div class="cki"><div class="cki-box"></div><div><h4>Tengo claro cuánto capital tengo disponible hoy</h4><p>No un rango — un número exacto.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>Si tengo pareja, estará presente en la llamada</h4><p>Si no puede estar, reagendar para cuando pueda.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>Leí el caso de estudio completo</h4><p>Para no empezar la llamada desde cero.</p></div></div>
+      <div class="cki"><div class="cki-box"></div><div><h4>Tengo 45 minutos sin interrupciones</h4><p>Sin niños, sin trabajo, sin distracciones. Si no puedo garantizarlo, reagendar.</p></div></div>
+    </div>
+
+    <div class="inner-rule r"></div>
+    <div class="sl r">Secuencia de recordatorios</div>
+    <div class="fq-list r">
+      <div class="fq">
+        <div class="fq-n" style="color:var(--g2);font-size:10px;font-weight:600;padding-top:3px">24h</div>
+        <div>
+          <h4>Email — 24 horas antes</h4>
+          <p>Asunto: "Tu llamada con Víctor es mañana — esto necesitas leer antes." Adjunta el PDF del caso de estudio. CTA: "Léelo antes de conectarte."</p>
+        </div>
+        <div class="tag gate">Email</div>
+      </div>
+      <div class="fq">
+        <div class="fq-n" style="color:var(--g2);font-size:10px;font-weight:600;padding-top:3px">2h</div>
+        <div>
+          <h4>Email — 2 horas antes</h4>
+          <p>Asunto: "Checklist para tu llamada de hoy con Víctor." Envía los 4 puntos. CTA: "Confirma tu asistencia respondiendo este email."</p>
+        </div>
+        <div class="tag gate">Email</div>
+      </div>
+      <div class="fq">
+        <div class="fq-n" style="color:var(--g2);font-size:10px;font-weight:600;padding-top:3px">15m</div>
+        <div>
+          <h4>WhatsApp — 15 minutos antes</h4>
+          <p>Mensaje directo del número de Víctor (puede ser automatizado): "Hola [nombre], Víctor por aquí. Nos vemos en 15 minutos. Aquí el link: [link]. Nos vemos."</p>
+        </div>
+        <div class="tag sig">WhatsApp</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="rule">
+
+
+<!-- ═══════════════════════════════
+     PASO 3: LLAMADA C.L.O.S.E.R.
+═══════════════════════════════ -->
+<div id="p3">
+  <div class="band r">
+    <div class="band-eye">Paso 03 — La Llamada</div>
+    <h2>Estructura y Guión<br><strong>C.L.O.S.E.R.</strong></h2>
+  </div>
+  <div class="band-body">
+
+    <p class="bt r"><strong>Duración total: 45–50 minutos máximo.</strong> El orden es obligatorio. Saltar una fase es la causa número uno del "lo pienso".</p>
+
+    <div class="closer r">
+
+      <div class="cs">
+        <div class="cs-l"><div class="lt">C</div><div class="mn">0–8<br>min</div></div>
+        <div class="cs-c">
+          <div class="cs-tag">Clarify — Abrir con el detonante</div>
+          <div class="cs-t">¿Por qué agendó HOY?</div>
+          <ul class="cs-b">
+            <li>Leer la respuesta del formulario antes de la llamada.</li>
+            <li>No asumir la motivación — preguntar siempre.</li>
+            <li>Si la respuesta es vaga, profundizar: "¿Cuándo pasó eso exactamente?"</li>
+            <li>Terminar repitiendo el detonante en sus propias palabras.</li>
+          </ul>
+          <div class="script">
+            <div class="sc-label">Script de apertura</div>
+            <p>"Antes de que te cuente cualquier cosa de lo que hacemos, necesito entender algo. En el formulario me dijiste <strong>[detonante específico]</strong>. Cuéntame más — ¿qué fue exactamente lo que pasó? Porque lo que me digas ahora es lo que va a definir si lo que hacemos tiene sentido para ti o no."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs">
+        <div class="cs-l"><div class="lt">L</div><div class="mn">8–15<br>min</div></div>
+        <div class="cs-c">
+          <div class="cs-tag">Label — Espejo empático</div>
+          <div class="cs-t">Lograr el "Exactamente, eso es"</div>
+          <ul class="cs-b">
+            <li>Parafrasear con SUS palabras, no las tuyas.</li>
+            <li>Incluir el dolor y el deseo en el mismo resumen.</li>
+            <li>Terminar con: "¿Lo estoy entendiendo bien?"</li>
+            <li>Si dice "casi" — escucha más antes de avanzar.</li>
+          </ul>
+          <div class="script">
+            <div class="sc-label">Script de resumen empático</div>
+            <p>"A ver si lo entiendo bien. Llevas <strong>[X años]</strong> trabajando duro, tienes <strong>[capital]</strong> ahorrado, y estás cansado de que ese dinero no trabaje por ti. Que si en <strong>[timeframe]</strong> no ves un cambio real, vas a seguir en el mismo ciclo. Y lo que te trajo aquí hoy fue <strong>[detonante]</strong>. ¿Lo estoy entendiendo bien?"</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs">
+        <div class="cs-l"><div class="lt">O</div><div class="mn">15–25<br>min</div></div>
+        <div class="cs-c">
+          <div class="cs-tag">Overview the Pain — Amplificar el costo de la inacción</div>
+          <div class="cs-t">Sin dolor profundo no hay compra de alto valor</div>
+          <ul class="cs-b">
+            <li>"¿Qué has intentado antes para llegar a ese objetivo?"</li>
+            <li>"Llevas [X años] con esa meta — ¿qué te ha costado no haberla alcanzado ya?"</li>
+            <li>"Si en 12 meses estás exactamente igual, ¿qué significa eso para ti?"</li>
+            <li>No responder antes de que el prospecto articule el dolor en voz alta.</li>
+          </ul>
+          <div class="script">
+            <div class="sc-label">Script de amplificación</div>
+            <p>"Antes de contarte cómo trabajamos, necesito entender algo más. Me dices que llevas <strong>[tiempo]</strong> queriendo hacer esto. ¿Qué has intentado antes? <strong>[Escuchar]</strong> Y cuando eso no funcionó, ¿qué impacto tuvo en ti — no solo económicamente, sino en cómo te sentiste con tus metas? <strong>[Escuchar]</strong> Ahora dime: si en 12 meses estuvieras exactamente igual, sin haber movido ese capital, ¿qué significaría eso para ti?"</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs">
+        <div class="cs-l"><div class="lt">S</div><div class="mn">25–38<br>min</div></div>
+        <div class="cs-c">
+          <div class="cs-tag">Sell the Vacation — Los 3 pilares</div>
+          <div class="cs-t">Vende el destino, no el proceso</div>
+          <ul class="cs-b">
+            <li><strong>Pilar 1:</strong> Tu dinero trabaja, tú supervisas. El banco financia el 80%.</li>
+            <li><strong>Pilar 2:</strong> No eres constructor, eres inversionista. Víctor gestiona. Tú decides.</li>
+            <li><strong>Pilar 3:</strong> Florida no para. Tu casa vale más el día que termina que cuando empezaste.</li>
+          </ul>
+          <div class="script">
+            <div class="sc-label">Analogía del banco — alto impacto</div>
+            <p>"¿Sabes cómo gana dinero un banco? Te presta $200k, cobras intereses sobre $200k aunque tú pusiste $40k. Eso es exactamente lo que vamos a hacer — pero al revés. Vamos a usar el dinero del banco para construir un activo que se vende en $240k. Tú pones $50k, el banco pone $150k, y cuando vendemos, los <strong>$40k de ganancia son 100% tuyos</strong>. El banco cobró sus intereses. Tú te quedaste con el equity. Eso es lo que hacen los ricos que nadie te enseña en la escuela."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs">
+        <div class="cs-l"><div class="lt">E</div><div class="mn">38–46<br>min</div></div>
+        <div class="cs-c">
+          <div class="cs-tag">Explain Away Concerns — Preventivo</div>
+          <div class="cs-t">Víctor introduce y desmonta las objeciones antes de que aparezcan</div>
+          <div class="cs-d">Frase de entrada: <em>"Una cosa que la gente me pregunta siempre en este punto es..."</em></div>
+          <div class="script">
+            <div class="sc-label">Tiempo</div>
+            <p>"Una cosa que la gente me pregunta siempre es cuánto tiempo les va a tomar. La respuesta honesta: <strong>una llamada de 20 minutos a la semana conmigo</strong>. Tú no vas a la obra. Yo soy tu gerente de proyecto."</p>
+          </div>
+          <div class="script">
+            <div class="sc-label">Capital</div>
+            <p>"Otra pregunta que surge siempre es el capital. Aquí hay algo contraintuitivo: el problema no es que no tengas suficiente — es que no sabes cuánto necesitas realmente. Déjame mostrarte los números con <strong>tu capital específico</strong>."</p>
+          </div>
+          <div class="script">
+            <div class="sc-label">Pareja</div>
+            <p>"Si tienes pareja, esto es una decisión de los dos. Por eso pedí que estuvieran juntos hoy. Si no está, lo que voy a pedirte es <strong>20 minutos con los tres esta semana</strong> para revisar los números juntos."</p>
+          </div>
+          <div class="script">
+            <div class="sc-label">Confianza</div>
+            <p>"Y la última — que todo el mundo tiene aunque no siempre la dice: '¿Cómo sé que esto es real?' <strong>[nombre del proyecto], [zona], [mes/año]</strong>, costo $[X], vendido en $[X], ganancia neta $[X] en [N] meses. Está en registros públicos del condado. Lo puedes verificar hoy mismo."</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs">
+        <div class="cs-l"><div class="lt">R</div><div class="mn">46–50<br>min</div></div>
+        <div class="cs-c">
+          <div class="cs-tag">Reinforce + Close — Cierre</div>
+          <div class="cs-t">Recomendar una opción específica, no un menú</div>
+          <ul class="cs-b">
+            <li>No presentar opciones A/B como menú — genera indecisión.</li>
+            <li>Recomendar una opción basada en el diagnóstico del prospecto.</li>
+          </ul>
+          <div class="script">
+            <div class="sc-label">Presentación de la oferta</div>
+            <p>"Basado en lo que me contaste — que tienes <strong>$[X] disponibles</strong>, que tu meta es <strong>[meta]</strong> en <strong>[timeframe]</strong>, y que lo que te detuvo antes fue <strong>[bloqueo]</strong> — mi recomendación es que empecemos con el programa completo de acompañamiento. No porque sea el más caro, sino porque con tu perfil, intentar hacerlo sin acompañamiento es lo que te haría perder tiempo y dinero. ¿Tiene sentido lo que te estoy diciendo?"</p>
+          </div>
+          <div class="script">
+            <div class="sc-label">La única pregunta de cierre válida</div>
+            <p>"¿Qué necesitas para sentirte cómodo tomando esta decisión hoy?"</p>
+          </div>
+          <div class="co green" style="margin-top:12px">
+            <div class="co-ey">Protocolo post-pago inmediato</div>
+            <ul>
+              <li><strong>En el momento:</strong> "Acabas de tomar la decisión más inteligente que podías tomar con ese capital hoy."</li>
+              <li><strong>En 5 minutos:</strong> WhatsApp personalizado de Víctor con acceso a la plataforma.</li>
+              <li><strong>En 2 horas:</strong> Email con roadmap de los primeros 30 días.</li>
+              <li><strong>En 48 horas:</strong> Llamada de onboarding — para confirmar que están en el camino correcto.</li>
+              <li><strong>A los 7 días:</strong> Primer reporte de avance. Elimina la ansiedad post-compra.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<hr class="rule">
+
+
+<!-- ═══════════════════════════════
+     PASO 4: OBJECIONES
+═══════════════════════════════ -->
+<div id="p4">
+  <div class="band r">
+    <div class="band-eye">Paso 04 — Objeciones Finales</div>
+    <h2><strong>"Lo pienso"</strong><br>nunca es la respuesta.</h2>
+  </div>
+  <div class="band-body">
+
+    <p class="bt r">Cuando el prospecto dice "lo pienso", <strong>hay una objeción real que no salió a la superficie.</strong> Este protocolo la encuentra y la resuelve antes de colgar.</p>
+
+    <div class="obj-list r">
+
+      <div class="obj">
+        <div class="obj-h"><div class="obj-n">1</div><div class="obj-q">"Lo pienso" / "Me lo tienes que dejar pensar"</div></div>
+        <div class="obj-b">
+          <div class="obj-diag">Diagnóstico: objeción real no identificada</div>
+          <div class="obj-lbl">Respuesta</div>
+          <p>"Cuando dices que lo piensas, ¿qué es exactamente lo que necesitas resolver para poder decir sí? Dame la objeción real — eso es lo que necesito para ayudarte a tomar la mejor decisión."</p>
+        </div>
+      </div>
+
+      <div class="obj">
+        <div class="obj-h"><div class="obj-n">2</div><div class="obj-q">"Es mucho dinero" / "No sé si puedo permitirlo"</div></div>
+        <div class="obj-b">
+          <div class="obj-diag">Diagnóstico: el ROI no fue tangible — anclar en retorno</div>
+          <div class="obj-lbl">Respuesta</div>
+          <p>"Entiendo que $[precio] se siente grande hoy. Pero dime: si invirtieras $[precio] y en 8 meses recuperaras $[retorno proyectado con su capital], ¿seguiría siendo mucho dinero? Porque no estamos hablando de un gasto — estamos hablando del costo de aprender a hacer una operación que va a generar $[X] cada 6–8 meses."</p>
+        </div>
+      </div>
+
+      <div class="obj">
+        <div class="obj-h"><div class="obj-n">3</div><div class="obj-q">"No es el momento" / "Ahora no puedo"</div></div>
+        <div class="obj-b">
+          <div class="obj-diag">Diagnóstico: costo de inacción no fue amplificado</div>
+          <div class="obj-lbl">Respuesta</div>
+          <p>"¿Cuándo sería el momento correcto? ¿Y qué tendría que cambiar para que ese momento llegue? Porque llevas [X tiempo] esperando ese momento — y el momento no llegó solo. Lo que estás haciendo hoy es exactamente lo que va a crear ese momento, o vas a seguir esperándolo."</p>
+        </div>
+      </div>
+
+      <div class="obj">
+        <div class="obj-h"><div class="obj-n">4</div><div class="obj-q">"Necesito hablarlo con mi esposa/esposo"</div></div>
+        <div class="obj-b">
+          <div class="obj-diag">Diagnóstico: no es objeción, es proceso — convertir en fecha</div>
+          <div class="obj-lbl">Respuesta</div>
+          <p>"Tiene todo el sentido — esta es una decisión de familia. ¿Cuándo puedes tener a tu pareja disponible? Necesito 20 minutos con los dos para revisar los números juntos. No para venderle a ella — para que tú tengas su respaldo. ¿El [día] o el [día] te funcionaría?"</p>
+        </div>
+      </div>
+
+      <div class="obj">
+        <div class="obj-h"><div class="obj-n">5</div><div class="obj-q">"Voy a investigar más" / "Quiero comparar opciones"</div></div>
+        <div class="obj-b">
+          <div class="obj-diag">Diagnóstico: desconfianza o falta de urgencia</div>
+          <div class="obj-lbl">Respuesta</div>
+          <p>"¿Qué específicamente necesitas investigar? Porque si hay algo que no respondí bien hoy, quiero saberlo ahora — no cuando ya encontraste otra opción. Y si quieres comparar, te lo digo yo mismo: hay tres personas haciendo esto en Florida de forma seria. La diferencia entre nosotros es [diferenciador]. ¿Eso es lo que te falta confirmar?"</p>
+        </div>
+      </div>
+
+      <div class="obj">
+        <div class="obj-h"><div class="obj-n">6</div><div class="obj-q">"¿Qué garantía tengo de que esto funciona?"</div></div>
+        <div class="obj-b">
+          <div class="obj-diag">Diagnóstico: desconfianza directa — prueba social específica</div>
+          <div class="obj-lbl">Respuesta</div>
+          <p>"La mejor garantía son los números reales de proyectos terminados — no proyecciones. Ya te mostré el caso de estudio. Está en registros públicos del condado — lo puedes verificar ahora mismo. Lo que yo garantizo es el proceso: qué vamos a hacer, cuándo, y cómo vas a saber que está avanzando. Lo que no puedo garantizar es el mercado — y nadie honesto puede hacerlo."</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="co red r" style="margin-top:20px">
+      <div class="co-ey">Regla absoluta</div>
+      <div class="co-t">Nunca terminar con "estamos en contacto".</div>
+      <p>Si el prospecto no paga hoy, la única salida válida es una acción concreta: segunda llamada con pareja (fecha y hora fijas), propuesta enviada con deadline de 48h, o cierre en ese momento. Sin acción concreta, la llamada no existió.</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- VERDICT -->
+<div class="verdict r">
+  <div class="v-ey">Implementación en 4 semanas</div>
+  <div class="v-t">Activar en orden.<br><strong>No todo a la vez.</strong></div>
+  <div class="v-grid">
+    <div class="vp"><div class="vp-n">S1</div><h4>Semana 1</h4><p>Reemplazar formulario. Activar filtro. Detener llamadas sin capital verificado.</p></div>
+    <div class="vp"><div class="vp-n">S2</div><h4>Semana 2</h4><p>Grabar video de confirmación. Crear PDF caso de estudio. Activar 3 recordatorios.</p></div>
+    <div class="vp"><div class="vp-n">S3</div><h4>Semana 3</h4><p>Grabar una llamada. Revisar contra C.L.O.S.E.R. ¿Preguntó el detonante? ¿Amplificó el dolor?</p></div>
+    <div class="vp"><div class="vp-n">S4</div><h4>Semana 4</h4><p>Activar protocolo post-pago: WhatsApp inmediato, email de roadmap, onboarding en 48h.</p></div>
+  </div>
+</div>
+
+<footer>Framework Implementativo · Víctor Arroyo · Metodología C.L.O.S.E.R. · 2025</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target)}});
+  },{threshold:.06,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.r').forEach((el,i)=>{
+    el.style.transitionDelay=`${(i%4)*.05}s`;
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
