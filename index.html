@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis de Llamadas — Víctor Arroyo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0d0c0b;
+    --cream:      #f5f2ed;
+    --warm-white: #faf8f5;
+    --gold:       #b8943e;
+    --gold-light: #e8d5a3;
+    --gold-pale:  #f7f0e0;
+    --red:        #a83228;
+    --red-pale:   #faf0ee;
+    --green:      #1d6645;
+    --green-pale: #ebf5f0;
+    --blue:       #1c3d5e;
+    --blue-pale:  #e9eff6;
+    --gray-1:     #3a3530;
+    --gray-2:     #6b6560;
+    --gray-3:     #b0aba4;
+    --border:     #e2ddd6;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── COVER ─────────────────────────────────────── */
+  .cover {
+    background: var(--ink);
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 88px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .cover-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin-bottom: 32px;
+  }
+  .cover-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 28px;
+  }
+  .cover h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(44px, 6vw, 76px);
+    font-weight: 600;
+    line-height: 1.08;
+    color: #fff;
+    margin-bottom: 28px;
+    letter-spacing: -0.02em;
+  }
+  .cover h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold-light);
+  }
+  .cover-desc {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    max-width: 420px;
+    line-height: 1.65;
+    margin-bottom: 72px;
+  }
+  .cover-footer {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 32px 88px;
+    position: relative;
+    z-index: 1;
+  }
+  .cover-stat {
+    flex: 1;
+    padding: 0 32px 0 0;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .cover-stat:first-child { padding-left: 0; }
+  .cover-stat:last-child { border-right: none; padding-left: 32px; padding-right: 0; }
+  .cover-stat label {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .cover-stat span {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ─── LAYOUT ─────────────────────────────────────── */
+  .wrap {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 100px 48px;
+  }
+
+  /* ─── SECTION ────────────────────────────────────── */
+  .section { margin-bottom: 100px; }
+  .section:last-child { margin-bottom: 0; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-title {
+    font-family: 'Lora', serif;
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 600;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gray-2);
+  }
+
+  .lead {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gray-1);
+    line-height: 1.8;
+    max-width: 640px;
+    margin-bottom: 48px;
+  }
+
+  .body-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--gray-1);
+    line-height: 1.8;
+    max-width: 640px;
+    margin-bottom: 24px;
+  }
+
+  hr.rule {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 80px 0;
+  }
+
+  /* ─── CALLOUT ────────────────────────────────────── */
+  .callout {
+    padding: 32px 36px;
+    margin: 36px 0;
+    border-left: 2px solid var(--gold);
+    background: var(--gold-pale);
+  }
+  .callout.red   { border-color: var(--red);   background: var(--red-pale); }
+  .callout.green { border-color: var(--green); background: var(--green-pale); }
+  .callout.blue  { border-color: var(--blue);  background: var(--blue-pale); }
+
+  .callout-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: var(--gold);
+  }
+  .callout.red   .callout-eyebrow { color: var(--red); }
+  .callout.green .callout-eyebrow { color: var(--green); }
+  .callout.blue  .callout-eyebrow { color: var(--blue); }
+
+  .callout-title {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.35;
+  }
+
+  .callout p, .callout li {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-1);
+    line-height: 1.75;
+  }
+  .callout ul { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .callout li { padding-left: 16px; position: relative; }
+  .callout li::before {
+    content: '–';
+    position: absolute; left: 0;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .callout.red   li::before { color: var(--red); }
+  .callout.green li::before { color: var(--green); }
+  .callout.blue  li::before { color: var(--blue); }
+
+  /* ─── PROFILE GRID ───────────────────────────────── */
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .profile-cell {
+    background: var(--warm-white);
+    padding: 28px 32px;
+  }
+  .profile-cell .cell-icon {
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .profile-cell h4 {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-3);
+    margin-bottom: 6px;
+  }
+  .profile-cell p {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-1);
+    line-height: 1.6;
+  }
+
+  /* ─── TIMELINE ───────────────────────────────────── */
+  .timeline { margin-top: 40px; }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 120px 1px 1fr;
+    gap: 0 32px;
+    padding-bottom: 40px;
+    position: relative;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item:last-child .tl-line { background: transparent; }
+  .tl-time {
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'Inter', monospace;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    padding-top: 3px;
+    text-align: right;
+  }
+  .tl-line {
+    background: var(--border);
+    position: relative;
+  }
+  .tl-dot {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 7px;
+    height: 7px;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    background: var(--cream);
+  }
+  .tl-content { padding-top: 0; }
+  .tl-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .tl-content p {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--gray-2);
+    line-height: 1.65;
+  }
+
+  /* ─── CARDS ──────────────────────────────────────── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  @media(max-width:600px){ .cards-grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--warm-white);
+    padding: 32px;
+    position: relative;
+    transition: background 0.2s;
+  }
+  .card:hover { background: #fff; }
+  .card-marker {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .card-marker::before {
+    content: '';
+    display: block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .card.strength .card-marker { color: var(--green); }
+  .card.strength .card-marker::before { background: var(--green); }
+  .card.weakness .card-marker { color: var(--red); }
+  .card.weakness .card-marker::before { background: var(--red); }
+  .card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .card p {
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--gray-2);
+    line-height: 1.65;
+  }
+
+  /* ─── OBJECTION BLOCKS ───────────────────────────── */
+  .objection { margin-bottom: 1px; }
+  .objection-head {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    background: var(--ink);
+    align-items: center;
+  }
+  .obj-n {
+    font-family: 'Lora', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--gold);
+    text-align: center;
+    padding: 20px 0;
+    border-right: 1px solid rgba(255,255,255,0.07);
+  }
+  .obj-q {
+    font-size: 13.5px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(255,255,255,0.65);
+    padding: 20px 28px;
+    line-height: 1.45;
+  }
+  .objection-body {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 24px 28px 24px calc(56px + 28px);
+  }
+  .obj-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .objection-body p {
+    font-size: 14px;
+    color: var(--gray-1);
+    line-height: 1.75;
+  }
+
+  /* ─── FLOW TABLE ─────────────────────────────────── */
+  .flow-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+    border: 1px solid var(--border);
+  }
+  .flow-table thead th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gray-3);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm-white);
+  }
+  .flow-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .flow-table tbody tr:last-child { border-bottom: none; }
+  .flow-table tbody tr:hover { background: var(--gold-pale); }
+  .flow-table td {
+    padding: 18px 20px;
+    font-size: 13.5px;
+    vertical-align: top;
+    line-height: 1.6;
+    color: var(--gray-1);
+  }
+  .flow-table td:first-child {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    width: 100px;
+  }
+  .flow-table td:nth-child(2) {
+    font-weight: 600;
+    color: var(--ink);
+    width: 190px;
+  }
+
+  /* ─── THREE PILLARS ──────────────────────────────── */
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    margin-top: 40px;
+  }
+  @media(max-width:600px){ .pillars { grid-template-columns: 1fr; } }
+  .pillar {
+    padding: 40px 32px;
+    background: rgba(255,255,255,0.03);
+  }
+  .pillar-n {
+    font-family: 'Lora', serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: rgba(184,148,62,0.25);
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .pillar h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .pillar p {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.65;
+  }
+
+  /* ─── VERDICT ────────────────────────────────────── */
+  .verdict {
+    background: var(--ink);
+    padding: 72px 80px;
+    margin-top: 80px;
+  }
+  .verdict-eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .verdict-title {
+    font-family: 'Lora', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    max-width: 520px;
+  }
+  .verdict-body {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.75;
+    max-width: 560px;
+    margin-bottom: 48px;
+  }
+
+  /* ─── FOOTER ─────────────────────────────────────── */
+  .doc-footer {
+    text-align: center;
+    padding: 60px 0 80px;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--gray-3);
+    text-transform: uppercase;
+  }
+
+  /* ─── REVEAL ─────────────────────────────────────── */
+  .r {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .r.show { opacity: 1; transform: translateY(0); }
+
+  /* ─── COVER ANIMATION ────────────────────────────── */
+  @keyframes up {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .cover-line   { animation: up 0.6s ease 0.1s both; }
+  .cover-eyebrow{ animation: up 0.6s ease 0.2s both; }
+  .cover h1     { animation: up 0.7s ease 0.35s both; }
+  .cover-desc   { animation: up 0.6s ease 0.5s both; }
+  .cover-footer { animation: up 0.6s ease 0.65s both; }
+</style>
+</head>
+<body>
+
+<!-- ━━ COVER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="cover">
+  <div class="cover-noise"></div>
+  <div class="cover-inner">
+    <div class="cover-line"></div>
+    <div class="cover-eyebrow">Diagnóstico Comercial · 2025</div>
+    <h1>Análisis de<br><em>Llamadas</em><br>de Venta</h1>
+    <p class="cover-desc">Un diagnóstico estructurado de los patrones, fortalezas y oportunidades de mejora en el proceso comercial de Víctor Arroyo.</p>
+  </div>
+  <div class="cover-footer">
+    <div class="cover-stat">
+      <label>Vendedor</label>
+      <span>Víctor Arroyo</span>
+    </div>
+    <div class="cover-stat">
+      <label>Llamadas analizadas</label>
+      <span>8+ transcripciones completas</span>
+    </div>
+    <div class="cover-stat">
+      <label>Prospectos</label>
+      <span>Amilcar, David, Diego, Hermès, Wilson y más</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="wrap">
+
+  <!-- ━━ 01 RESUMEN EJECUTIVO ━━ -->
+  <div class="section">
+    <div class="section-label r">01 — Resumen Ejecutivo</div>
+    <h2 class="section-title r">El problema no es<br><em>el producto.</em></h2>
+    <p class="lead r">Víctor demuestra dominio del producto, buena energía y una conexión empática genuina con el prospecto latino. El modelo de negocio —construcción de casas nuevas en Florida con apalancamiento bancario— tiene propuesta de valor sólida y real.</p>
+
+    <div class="callout r">
+      <div class="callout-eyebrow">Veredicto central</div>
+      <div class="callout-title">Las llamadas están orientadas a educar, no a cerrar.</div>
+      <p>El prospecto termina con mucho conocimiento pero sin urgencia ni compromiso. Con ajustes estructurales puntuales —sin cambiar la personalidad ni el producto— la tasa de conversión podría duplicarse en pocas semanas.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ━━ 02 PERFIL DEL PROSPECTO ━━ -->
+  <div class="section">
+    <div class="section-label r">02 — Perfil del Prospecto</div>
+    <h2 class="section-title r">Un perfil<br><em>sorprendentemente consistente.</em></h2>
+    <p class="body-text r">Todos los prospectos analizados comparten características muy similares. Conocer este perfil en profundidad es el punto de partida para cualquier optimización.</p>
+
+    <div class="profile-grid r">
+      <div class="profile-cell">
+        <span class="cell-icon">🌎</span>
+        <h4>Origen</h4>
+        <p>Latino en EE.UU. (Florida, Miami, Puerto Rico) o en Latinoamérica (Colombia, Argentina, Venezuela, Guatemala).</p>
+      </div>
+      <div class="profile-cell">
+        <span class="cell-icon">💰</span>
+        <h4>Capital disponible</h4>
+        <p>Entre $40,000 y $150,000 ahorrados. Muy pocos tienen capital líquido superior a $100k de forma inmediata.</p>
+      </div>
+      <div class="profile-cell">
+        <span class="cell-icon">💼</span>
+        <h4>Perfil laboral</h4>
+        <p>Emprendedor o profesional independiente. Personal trainer, imprenta, contratista, trader. Mentalidad de "jefe propio".</p>
+      </div>
+      <div class="profile-cell">
+        <span class="cell-icon">🎯</span>
+        <h4>Meta de vida</h4>
+        <p>Libertad financiera, ingresos pasivos o dejar de trabajar para otros en 2–5 años. No busca enriquecerse rápido.</p>
+      </div>
+      <div class="profile-cell">
+        <span class="cell-icon">🏠</span>
+        <h4>Experiencia previa</h4>
+        <p>Ya tuvo contacto con bienes raíces: casa propia, departamentos, algo de bolsa. No es un novato total en inversión.</p>
+      </div>
+      <div class="profile-cell">
+        <span class="cell-icon">📱</span>
+        <h4>Canal de captación</h4>
+        <p>Casi el 100% llega por Instagram / publicidad pagada. Pocos llenaron formulario previo — baja precalificación inicial.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ━━ 03 PATRONES ━━ -->
+  <div class="section">
+    <div class="section-label r">03 — Patrones Recurrentes</div>
+    <h2 class="section-title r">Lo que se repite<br><em>en todas las llamadas.</em></h2>
+
+    <p class="body-text r">Víctor sigue un arco consistente —positivo— pero el peso relativo de cada fase está desequilibrado: demasiado tiempo en educación, muy poco en cierre.</p>
+
+    <div class="timeline r">
+      <div class="timeline-item">
+        <div class="tl-time">0 – 5 min</div>
+        <div class="tl-line"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <h4>Apertura y rapport</h4>
+          <p>Saludo, ubicación, conversación sobre la vida del prospecto. Funciona bien — genera confianza rápida y genuina.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">5 – 25 min</div>
+        <div class="tl-line"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <h4>Diagnóstico (variable)</h4>
+          <p>Preguntas sobre motivaciones, capital y experiencia previa. El capital se pregunta demasiado tarde — debe ser lo primero.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">20 – 70 min</div>
+        <div class="tl-line"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <h4>Presentación extensa del negocio</h4>
+          <p>Explicación completa del modelo, zonas, financiamiento y números. Esta fase es excesivamente larga — educa demasiado y elimina urgencia de compra.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-time">Final</div>
+        <div class="tl-line"><div class="tl-dot"></div></div>
+        <div class="tl-content">
+          <h4>Oferta y cierre difuso</h4>
+          <p>Presentación de opciones (Nexus $997 / Llave en mano $3,000). El cierre es inconsistente — sin secuencia definida ni manejo preparado de objeciones.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout r" style="margin-top:48px;">
+      <div class="callout-eyebrow">Las 5 objeciones que se repiten en todas las llamadas</div>
+      <ul>
+        <li><strong>"Necesito pensarlo"</strong> — Amilcar Sleger, David Martínez, Diego Cedeño</li>
+        <li><strong>"No tengo suficiente capital ahora"</strong> — David, Diego, Mauricio</li>
+        <li><strong>"Tengo muchos proyectos abiertos / no tengo tiempo"</strong> — Amilcar</li>
+        <li><strong>"Necesito hablar con mi pareja / revisar finanzas"</strong> — Wilson, Hermès</li>
+        <li><strong>"¿Cómo sé que esto funciona?"</strong> — Presente de forma implícita en todos</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ━━ 04 FORTALEZAS ━━ -->
+  <div class="section">
+    <div class="section-label r">04 — Fortalezas</div>
+    <h2 class="section-title r">Lo que está<br><em>muy bien.</em></h2>
+    <p class="body-text r">Víctor tiene ingredientes genuinos de un vendedor de alto nivel. Estas fortalezas no deben modificarse — son el activo principal sobre el que construir todo lo demás.</p>
+
+    <div class="cards-grid r">
+      <div class="card strength">
+        <div class="card-marker">Fortaleza</div>
+        <h4>Rapport genuino y rápido</h4>
+        <p>Conecta con el prospecto en los primeros minutos. Con Amilcar logra 1h40 de conversación donde el prospecto comparte su situación financiera completa — algo que no ocurre sin confianza real.</p>
+      </div>
+      <div class="card strength">
+        <div class="card-marker">Fortaleza</div>
+        <h4>Dominio profundo del producto</h4>
+        <p>Costos, zonas, permisos, financiamiento bancario, tipos de propiedad, retornos. Responde con seguridad ante cualquier pregunta técnica, lo cual valida la propuesta.</p>
+      </div>
+      <div class="card strength">
+        <div class="card-marker">Fortaleza</div>
+        <h4>Honestidad sobre retornos</h4>
+        <p>"20–30%, no te digo 50% porque sería mentira." Esta transparencia diferencia a Víctor de la mayoría de vendedores de inversión y construye credibilidad duradera.</p>
+      </div>
+      <div class="card strength">
+        <div class="card-marker">Fortaleza</div>
+        <h4>Comprensión de la cultura latina</h4>
+        <p>Entiende el rechazo al financiamiento, la desconfianza inicial y la necesidad de negociar el precio. Lo normaliza y lo usa como punto de conexión, no de fricción.</p>
+      </div>
+      <div class="card strength">
+        <div class="card-marker">Fortaleza</div>
+        <h4>Oferta escalonada inteligente</h4>
+        <p>Dos opciones claras: educación ($997) y llave en mano ($3,000). Baja la barrera de entrada y permite que el prospecto elija su nivel de compromiso inicial.</p>
+      </div>
+      <div class="card strength">
+        <div class="card-marker">Fortaleza</div>
+        <h4>Personalización en tiempo real</h4>
+        <p>Sabe cuándo hablar de flip vs. renta, extranjero vs. residente, duplex vs. casa simple. Adapta la conversación al contexto específico de cada prospecto.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ━━ 05 DEBILIDADES ━━ -->
+  <div class="section">
+    <div class="section-label r">05 — Áreas de Mejora</div>
+    <h2 class="section-title r">Lo que está mal<br><em>y se puede corregir.</em></h2>
+    <p class="body-text r">Estos son los problemas estructurales que están limitando la conversión. Ninguno requiere cambiar la personalidad de Víctor — solo el proceso.</p>
+
+    <div class="cards-grid r">
+      <div class="card weakness">
+        <div class="card-marker">Crítico</div>
+        <h4>Llamadas demasiado largas y educativas</h4>
+        <p>El prospecto aprende tanto que pierde urgencia de pagar por la mentoría. Amilcar terminó la llamada sabiendo el modelo completo — y por eso no se comprometió.</p>
+      </div>
+      <div class="card weakness">
+        <div class="card-marker">Crítico</div>
+        <h4>Sin cierre estructurado</h4>
+        <p>Preguntas abiertas como "¿qué te gustaría hacer?" en lugar de opciones concretas. Las llamadas terminan con "estamos en contacto" — sin compromiso real.</p>
+      </div>
+      <div class="card weakness">
+        <div class="card-marker">Importante</div>
+        <h4>Capital calificado demasiado tarde</h4>
+        <p>En varios casos presenta proyectos de $200k antes de saber que el prospecto solo tiene $40k. Esto hace irrelevante parte de la presentación.</p>
+      </div>
+      <div class="card weakness">
+        <div class="card-marker">Importante</div>
+        <h4>Sin framework para objeciones</h4>
+        <p>Sin un sistema preparado, Víctor responde de forma variable. A veces presiona de más, a veces valida demasiado — sin anclar ningún compromiso concreto.</p>
+      </div>
+      <div class="card weakness">
+        <div class="card-marker">Importante</div>
+        <h4>Urgencia artificial percibida</h4>
+        <p>Las frases genéricas de escasez son reconocidas por los prospectos. Amilcar lo dice explícitamente — lo cual erosiona la confianza acumulada durante la llamada.</p>
+      </div>
+      <div class="card weakness">
+        <div class="card-marker">Mejorable</div>
+        <h4>Precalificación insuficiente</h4>
+        <p>Prospectos sin capital mínimo o sin situación legal adecuada llegan a la llamada de cierre. Gasta tiempo valioso en conversaciones sin posibilidad real de conversión.</p>
+      </div>
+    </div>
+
+    <div class="callout red r" style="margin-top:32px;">
+      <div class="callout-eyebrow">Regla de oro</div>
+      <div class="callout-title">Una llamada de ventas no es una clase magistral.</div>
+      <p>El objetivo es calificar al prospecto, generar deseo y cerrar un compromiso — no transferir conocimiento. Menos información gratuita = más urgencia de compra. Más educación gratuita = el prospecto siente que ya puede hacerlo solo.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ━━ 06 FRAMEWORK OBJECIONES ━━ -->
+  <div class="section">
+    <div class="section-label r">06 — Framework de Objeciones</div>
+    <h2 class="section-title r">Respuestas preparadas,<br><em>no improvisadas.</em></h2>
+    <p class="body-text r">Estas son las respuestas estructuradas para las 5 objeciones recurrentes. La diferencia entre un vendedor promedio y uno excelente está en tener estas respuestas listas antes de que la objeción aparezca.</p>
+
+    <div class="r">
+      <div class="objection">
+        <div class="objection-head">
+          <div class="obj-n">1</div>
+          <div class="obj-q">"Necesito pensarlo" / "No puedo decidir hoy"</div>
+        </div>
+        <div class="objection-body">
+          <div class="obj-label">Respuesta recomendada</div>
+          <p>«Entiendo perfectamente. Cuando dices que necesitas pensarlo, ¿qué es exactamente lo que no está claro? Porque en esta hora hemos cubierto el modelo completo. Si hay algo específico que te genera duda, prefiero que lo resolvamos ahora juntos antes de que sigas con una interrogante abierta.»</p>
+        </div>
+      </div>
+
+      <div class="objection">
+        <div class="objection-head">
+          <div class="obj-n">2</div>
+          <div class="obj-q">"No tengo el capital ahora"</div>
+        </div>
+        <div class="objection-body">
+          <div class="obj-label">Respuesta recomendada</div>
+          <p>«Perfecto, eso tiene solución. El programa cuesta $997 hoy. Eso te da el conocimiento para evaluar cuándo y cómo entrar. No necesitas los $100k esta semana — necesitas el conocimiento para que cuando tengas el capital, sepas exactamente qué hacer con él. ¿Eso lo tienes disponible hoy?»</p>
+        </div>
+      </div>
+
+      <div class="objection">
+        <div class="objection-head">
+          <div class="obj-n">3</div>
+          <div class="obj-q">"Tengo muchos proyectos abiertos / no tengo tiempo"</div>
+        </div>
+        <div class="objection-body">
+          <div class="obj-label">Respuesta recomendada</div>
+          <p>«Eso me dice que eres un emprendedor activo, lo respeto. Pero el problema de tener muchas opciones abiertas es que ninguna avanza. ¿Cuál de todas esas opciones tiene el potencial de generarte $30,000–$50,000 en los próximos 6 meses con el capital que tienes hoy? Eso es lo que hay que evaluar.»</p>
+        </div>
+      </div>
+
+      <div class="objection">
+        <div class="objection-head">
+          <div class="obj-n">4</div>
+          <div class="obj-q">"Necesito hablar con mi pareja primero"</div>
+        </div>
+        <div class="objection-body">
+          <div class="obj-label">Respuesta recomendada</div>
+          <p>«Tiene todo el sentido — este es un tema de familia. ¿Qué necesitarías que yo le explicara a tu pareja para que se sientan cómodos tomando esta decisión juntos? ¿Podemos agendar una segunda llamada los tres, con fecha fija?» → Convertir la objeción en una segunda cita concreta.</p>
+        </div>
+      </div>
+
+      <div class="objection">
+        <div class="objection-head">
+          <div class="obj-n">5</div>
+          <div class="obj-q">"¿Cómo sé que esto funciona?" (desconfianza implícita)</div>
+        </div>
+        <div class="objection-body">
+          <div class="obj-label">Respuesta recomendada</div>
+          <p>Usar casos de estudio específicos con números reales: nombre del proyecto, zona concreta, costo de construcción, precio de venta, tiempo transcurrido. No generalidades — ejemplos verificables. La prueba social específica vence a cualquier argumento genérico.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ━━ 07 NUEVA ESTRUCTURA ━━ -->
+  <div class="section">
+    <div class="section-label r">07 — Estructura Recomendada</div>
+    <h2 class="section-title r">La llamada ideal<br><em>en 45–50 minutos.</em></h2>
+    <p class="body-text r">La llamada debe seguir este arco preciso. El cambio más importante: el diagnóstico financiero ocurre antes de la presentación, no después.</p>
+
+    <table class="flow-table r">
+      <thead>
+        <tr>
+          <th>Tiempo</th>
+          <th>Fase</th>
+          <th>Objetivo concreto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0 – 5 min</td>
+          <td>Apertura</td>
+          <td>Conexión, validar por qué agendaron, establecer el marco y la duración de la llamada.</td>
+        </tr>
+        <tr>
+          <td>5 – 15 min</td>
+          <td>Diagnóstico financiero</td>
+          <td>Capital disponible, urgencia real, bloqueos y objetivos. El capital debe preguntarse antes de los 10 minutos — antes de presentar nada.</td>
+        </tr>
+        <tr>
+          <td>15 – 30 min</td>
+          <td>Presentación personalizada</td>
+          <td>Solo lo relevante para SU situación. No explicar todo el modelo — solo lo que conecta directamente con su perfil y capital.</td>
+        </tr>
+        <tr>
+          <td>30 – 40 min</td>
+          <td>Manejo de objeciones</td>
+          <td>Proactivo, no reactivo. Anticipar las objeciones antes de que surjan: "Una pregunta que la gente suele tener en este punto es..."</td>
+        </tr>
+        <tr>
+          <td>40 – 50 min</td>
+          <td>Cierre y siguiente paso</td>
+          <td>Propuesta con dos opciones concretas. Compromiso específico antes de colgar. NUNCA terminar con "estamos en contacto".</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout green r" style="margin-top:32px;">
+      <div class="callout-eyebrow">La regla del siguiente paso</div>
+      <div class="callout-title">Toda llamada termina con una de estas tres opciones — no hay cuarta.</div>
+      <ul>
+        <li>El prospecto paga el programa hoy y recibe acceso inmediato en esa misma llamada</li>
+        <li>Se agenda una segunda llamada con fecha, hora y objetivo concreto ya definidos</li>
+        <li>Se envía una propuesta con fecha de vencimiento de 48–72 horas máximo</li>
+      </ul>
+    </div>
+
+    <div class="callout blue r">
+      <div class="callout-eyebrow">Sobre la urgencia</div>
+      <p>La urgencia real es específica, no genérica. "Este lote en Ocala está en $22,000 y hay dos compradores interesados esta semana" vence a cualquier frase de escasez fabricada. O temporal y concreta: "Si empezamos en enero, vendes en julio. Si esperas hasta julio, no ves dinero hasta diciembre del año que viene."</p>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+
+<!-- ━━ VERDICT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<div class="verdict r">
+  <div style="max-width:840px; margin:0 auto; padding: 0 48px;">
+    <div class="verdict-eyebrow">Diagnóstico Final</div>
+    <div class="verdict-title">Los 3 cambios con mayor impacto inmediato.</div>
+    <p class="verdict-body">Con estos tres ajustes —manteniendo todas las fortalezas que ya tiene— Víctor podría duplicar su tasa de conversión en las próximas semanas.</p>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-n">1</div>
+        <h4>Limitar la información gratuita</h4>
+        <p>No dar toda la educación en la llamada. El conocimiento profundo es el producto — darlo gratis elimina la razón de comprarlo.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-n">2</div>
+        <h4>Calificar capital en los primeros 10 minutos</h4>
+        <p>Antes de presentar nada, saber exactamente cuánto tienen disponible. Personaliza la conversación y evita presentaciones irrelevantes.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-n">3</div>
+        <h4>Terminar con compromiso, no con esperanza</h4>
+        <p>Sin una acción concreta al cerrar, la llamada fue una clase, no una venta. Pago, fecha fija, o propuesta con deadline.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-footer">
+  Diagnóstico Comercial · Víctor Arroyo · 2025
+</div>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('show');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+
+  document.querySelectorAll('.r').forEach((el, i) => {
+    el.style.transitionDelay = `${(i % 3) * 0.06}s`;
+    obs.observe(el);
+  });
+</script>
+
+</body>
+</html>
