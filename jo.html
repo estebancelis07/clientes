@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organigrama | Jairo Osorio - Método LIDER</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Google Fonts: Inter & Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+        }
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+        }
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .premium-border {
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-4 md:p-8" x-data="{ expanded: { marketing: true, ventas: true, operaciones: true, workflow: true } }">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- HEADER HEADER -->
+        <header class="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-6 md:p-10 mb-10 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+            <div class="relative z-10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <h1 class="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">
+                            Organigrama Negocio Jairo Osorio
+                        </h1>
+                        <p class="text-white/90 text-lg font-medium">
+                            Mentoría High-Ticket ($1,200) · Método LIDER
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="glass px-4 py-2 rounded-xl flex items-center gap-2">
+                            <i data-lucide="target" class="w-5 h-5 text-yellow-300"></i>
+                            <span class="text-white font-bold text-sm tracking-wide">3 → 8 Clientes/Mes</span>
+                        </div>
+                        <div class="glass px-4 py-2 rounded-xl flex items-center gap-2">
+                            <i data-lucide="users" class="w-5 h-5 text-blue-300"></i>
+                            <span class="text-white font-bold text-sm tracking-wide">Team: 6 Personas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- LIDERAZGO ESTRATÉGICO -->
+        <section class="mb-12">
+            <div class="bg-purple-600 rounded-2xl p-6 shadow-xl mb-6 flex items-center gap-3">
+                <i data-lucide="shield" class="w-8 h-8 text-white"></i>
+                <h2 class="text-2xl md:text-3xl font-bold text-white uppercase tracking-wider">Liderazgo Estratégico</h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Esteban -->
+                <div class="glass p-8 rounded-2xl premium-border hover:shadow-purple-500/10 transition-all group">
+                    <h3 class="text-2xl font-bold text-white mb-6 group-hover:text-purple-400 transition-colors">ESTEBAN - Director General</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-purple-400 font-bold uppercase text-xs tracking-widest mb-3">Responsabilidades</p>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-500 mt-1"></i> Dirección estratégica general</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-500 mt-1"></i> Supervisión MK, Ventas y Servicio</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-500 mt-1"></i> Análisis de métricas y decisiones</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-500 mt-1"></i> Coordinación y resolución de bloqueos</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-purple-400 font-bold uppercase text-xs tracking-widest mb-3">KPIs Clave</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-purple-900/50 text-purple-200 px-3 py-1 rounded-lg text-xs font-semibold border border-purple-500/30">Revenue Mensual</span>
+                                <span class="bg-purple-900/50 text-purple-200 px-3 py-1 rounded-lg text-xs font-semibold border border-purple-500/30">CAC</span>
+                                <span class="bg-purple-900/50 text-purple-200 px-3 py-1 rounded-lg text-xs font-semibold border border-purple-500/30">LTV</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Jairo -->
+                <div class="glass p-8 rounded-2xl premium-border hover:shadow-purple-500/10 transition-all group">
+                    <h3 class="text-2xl font-bold text-white mb-6 group-hover:text-purple-400 transition-colors">JAIRO - Mentor & Closer</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-purple-400 font-bold uppercase text-xs tracking-widest mb-3">Responsabilidades</p>
+                            <ul class="space-y-2 text-slate-300">
+                                <li class="flex items-start gap-2"><i data-lucide="video" class="w-4 h-4 text-purple-500 mt-1"></i> Grabar 5-7 reels/semana</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-500 mt-1"></i> Cerrar ventas (30-40% conv.)</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-500 mt-1"></i> Entregar mentorías Método LIDER</li>
+                                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-purple-500 mt-1"></i> Validar estrategia con Jorge/Arny</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-purple-400 font-bold uppercase text-xs tracking-widest mb-3">KPIs Clave</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-purple-900/50 text-purple-200 px-3 py-1 rounded-lg text-xs font-semibold border border-purple-500/30">Tasa de Cierre</span>
+                                <span class="bg-purple-900/50 text-purple-200 px-3 py-1 rounded-lg text-xs font-semibold border border-purple-500/30">NPS Clientes</span>
+                                <span class="bg-purple-900/50 text-purple-200 px-3 py-1 rounded-lg text-xs font-semibold border border-purple-500/30">Contenido Semanal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARKETING & CONTENIDO -->
+        <section class="mb-12" x-data="{ open: true }">
+            <button @click="open = !open" class="w-full bg-blue-600 rounded-2xl p-6 shadow-xl mb-6 flex items-center justify-between group transition-all">
+                <div class="flex items-center gap-3 text-white">
+                    <i data-lucide="trending-up" class="w-8 h-8"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold uppercase tracking-wider">Marketing & Contenido</h2>
+                </div>
+                <i data-lucide="chevron-down" class="w-6 h-6 text-white transition-transform duration-300" :class="open ? '' : '-rotate-90'"></i>
+            </button>
+            
+            <div x-show="open" x-collapse x-cloak>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Jorge & Arny -->
+                    <div class="glass p-6 rounded-2xl border border-blue-500/30">
+                        <h3 class="text-xl font-bold text-white mb-4">JORGE & ARNY <br><span class="text-blue-400 text-sm font-normal">Estrategas de Contenido</span></h3>
+                        <p class="text-xs font-bold text-yellow-500 mb-4 tracking-widest uppercase">FOCO: VOLUMEN DE DMS</p>
+                        <ul class="space-y-2 text-slate-300 text-sm mb-6">
+                            <li>• Estrategia mensual orientada a ventas</li>
+                            <li>• Guiones de reels con CTAs claros</li>
+                            <li>• Planear historias interactivas diarios</li>
+                            <li>• Análisis de leads calificados vs contenido</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-600/20 text-blue-200 px-2 py-1 rounded text-[10px] font-bold border border-blue-500/20">Conv. Reel → DM</span>
+                            <span class="bg-blue-600/20 text-blue-200 px-2 py-1 rounded text-[10px] font-bold border border-blue-500/20">Engagement Rate</span>
+                        </div>
+                    </div>
+                    <!-- Kelly -->
+                    <div class="glass p-6 rounded-2xl border border-blue-500/30">
+                        <h3 class="text-xl font-bold text-white mb-4">KELLY <br><span class="text-blue-400 text-sm font-normal">CM & Calificadora</span></h3>
+                        <p class="text-xs font-bold text-orange-400 mb-4 tracking-widest uppercase">ROL DUAL CRÍTICO</p>
+                        <ul class="space-y-2 text-slate-300 text-sm mb-6">
+                            <li>• Publicar reels e historias diarias</li>
+                            <li>• FILTRAR Y CALIFICAR (BANT)</li>
+                            <li>• Nutrición de leads calificados</li>
+                            <li>• Interactuar para construir comunidad</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-600/20 text-blue-200 px-2 py-1 rounded text-[10px] font-bold border border-blue-500/20">DMs Resp/Día</span>
+                            <span class="bg-blue-600/20 text-blue-200 px-2 py-1 rounded text-[10px] font-bold border border-blue-500/20">Response Time < 2h</span>
+                        </div>
+                    </div>
+                    <!-- Juan Camilo -->
+                    <div class="glass p-6 rounded-2xl border border-blue-500/30">
+                        <h3 class="text-xl font-bold text-white mb-4">JUAN CAMILO <br><span class="text-blue-400 text-sm font-normal">Editor Senior</span></h3>
+                        <p class="text-xs font-bold text-blue-400 mb-4 tracking-widest uppercase">RETENCIÓN VISUAL</p>
+                        <ul class="space-y-2 text-slate-300 text-sm mb-6">
+                            <li>• Editar 5-7 reels semanales</li>
+                            <li>• Historias dinámicas con Stickers</li>
+                            <li>• Subtítulos y efectos de retención</li>
+                            <li>• Entrega < 48h (Turnaround)</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-blue-600/20 text-blue-200 px-2 py-1 rounded text-[10px] font-bold border border-blue-500/20">Avg Views</span>
+                            <span class="bg-blue-600/20 text-blue-200 px-2 py-1 rounded text-[10px] font-bold border border-blue-500/20">Turnaround Time</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VENTAS & CONVERSIÓN -->
+        <section class="mb-12" x-data="{ open: true }">
+            <button @click="open = !open" class="w-full bg-green-600 rounded-2xl p-6 shadow-xl mb-6 flex items-center justify-between group transition-all">
+                <div class="flex items-center gap-3 text-white">
+                    <i data-lucide="dollar-sign" class="w-8 h-8"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold uppercase tracking-wider">Ventas & Conversión</h2>
+                    <span class="hidden md:ml-4 md:block bg-red-500 text-white text-[10px] px-3 py-1 rounded-full animate-pulse tracking-widest font-bold">CUELLO DE BOTELLA</span>
+                </div>
+                <i data-lucide="chevron-down" class="w-6 h-6 text-white transition-transform duration-300" :class="open ? '' : '-rotate-90'"></i>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="grid md:grid-cols-2 gap-6">
+                <!-- Kelly (Sales) -->
+                <div class="glass p-8 rounded-2xl border border-green-500/30">
+                    <h3 class="text-2xl font-bold text-white mb-6">KELLY - Calificadora</h3>
+                    <div class="bg-green-600/10 p-4 rounded-xl mb-6 border border-green-500/20">
+                        <p class="text-green-400 font-bold text-xs uppercase mb-2">Responsabilidad Clave</p>
+                        <p class="text-slate-200 text-sm italic">"Filtrar el ruido para que Jairo solo hable con quien PUEDE y QUIERE comprar hoy."</p>
+                    </div>
+                    <ul class="space-y-3 text-slate-300 mb-8">
+                        <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mt-1"></i> Aplicar BANT en DMs</li>
+                        <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mt-1"></i> Nutrir con contenido según objeciones</li>
+                        <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mt-1"></i> Confirmar calls (24h y 2h antes)</li>
+                        <li class="flex items-start gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-500 mt-1"></i> Seguimiento a no-shows</li>
+                    </ul>
+                    <div class="flex justify-between items-center bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                        <div class="text-center">
+                            <p class="text-green-500 font-bold text-xl leading-none">2-3</p>
+                            <p class="text-slate-400 text-[10px] uppercase mt-1">Leads/Día</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-green-500 font-bold text-xl leading-none">20%</p>
+                            <p class="text-slate-400 text-[10px] uppercase mt-1">Rate Agend.</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-green-500 font-bold text-xl leading-none">70%</p>
+                            <p class="text-slate-400 text-[10px] uppercase mt-1">Show-up</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Jairo (Sales) -->
+                <div class="glass p-8 rounded-2xl border border-green-500/30">
+                    <h3 class="text-2xl font-bold text-white mb-6">JAIRO - Closer de Élite</h3>
+                    <div class="bg-green-600/10 p-4 rounded-xl mb-6 border border-green-500/20">
+                        <p class="text-green-400 font-bold text-xs uppercase mb-2">Cierre de Alto Valor</p>
+                        <p class="text-slate-200 text-sm">Ticket Promedio: <span class="text-white font-bold">$1,200 USD</span></p>
+                    </div>
+                    <ul class="space-y-3 text-slate-300 mb-8">
+                        <li class="flex items-start gap-2"><i data-lucide="message-square" class="w-4 h-4 text-green-500 mt-1"></i> Calls de alto impacto (5-10/semana)</li>
+                        <li class="flex items-start gap-2"><i data-lucide="message-square" class="w-4 h-4 text-green-500 mt-1"></i> Manejo magistral de objeciones</li>
+                        <li class="flex items-start gap-2"><i data-lucide="message-square" class="w-4 h-4 text-green-500 mt-1"></i> Cierre directo o seguimiento estratégico</li>
+                        <li class="flex items-start gap-2"><i data-lucide="message-square" class="w-4 h-4 text-green-500 mt-1"></i> Feedback loop de calidad a Kelly</li>
+                    </ul>
+                    <div class="flex justify-between items-center bg-slate-900/50 p-4 rounded-xl border border-white/5">
+                        <div class="text-center">
+                            <p class="text-green-500 font-bold text-xl leading-none">30-40%</p>
+                            <p class="text-slate-400 text-[10px] uppercase mt-1">Tasa Cierre</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-green-500 font-bold text-xl leading-none">10</p>
+                            <p class="text-slate-400 text-[10px] uppercase mt-1">Calls Max</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-green-500 font-bold text-xl leading-none">Feedback</p>
+                            <p class="text-slate-400 text-[10px] uppercase mt-1">Kelly Loop</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OPERACIONES & SERVICIO -->
+        <section class="mb-12" x-data="{ open: true }">
+            <button @click="open = !open" class="w-full bg-orange-600 rounded-2xl p-6 shadow-xl mb-6 flex items-center justify-between group transition-all">
+                <div class="flex items-center gap-3 text-white">
+                    <i data-lucide="settings" class="w-8 h-8"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold uppercase tracking-wider">Operaciones & Servicio</h2>
+                </div>
+                <i data-lucide="chevron-down" class="w-6 h-6 text-white transition-transform duration-300" :class="open ? '' : '-rotate-90'"></i>
+            </button>
+            <div x-show="open" x-collapse x-cloak class="grid md:grid-cols-2 gap-6">
+                <!-- Arny -->
+                <div class="glass p-8 rounded-2xl border border-orange-500/30">
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 class="text-2xl font-bold text-white">ARNY <br><span class="text-orange-400 text-sm font-normal">Customer Success Manager</span></h3>
+                        <span class="bg-orange-500/20 text-orange-200 px-2 py-1 rounded text-[10px] font-bold border border-orange-500/50">NUEVA ASIGNACIÓN</span>
+                    </div>
+                    <ul class="space-y-3 text-slate-300 mb-8">
+                        <li class="flex items-start gap-2"><i data-lucide="zap" class="w-4 h-4 text-orange-500 mt-1"></i> Onboarding de nuevos clientes</li>
+                        <li class="flex items-start gap-2"><i data-lucide="zap" class="w-4 h-4 text-orange-500 mt-1"></i> Gestión de agenda de Jairo (Mentorías)</li>
+                        <li class="flex items-start gap-2"><i data-lucide="zap" class="w-4 h-4 text-orange-500 mt-1"></i> Seguimiento quincenal de progreso</li>
+                        <li class="flex items-start gap-2"><i data-lucide="zap" class="w-4 h-4 text-orange-500 mt-1"></i> Recolectar testimonios/casos de éxito</li>
+                    </ul>
+                    <div class="flex gap-4">
+                        <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 flex-1 text-center">
+                            <p class="text-orange-400 font-bold">9+/10</p>
+                            <p class="text-slate-500 text-[10px] uppercase">Meta NPS</p>
+                        </div>
+                        <div class="bg-slate-900/50 p-3 rounded-lg border border-white/5 flex-1 text-center">
+                            <p class="text-orange-400 font-bold">2-3</p>
+                            <p class="text-slate-500 text-[10px] uppercase">Casos/Mes</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Esteban (Ops) -->
+                <div class="glass p-8 rounded-2xl border border-orange-500/30">
+                    <h3 class="text-2xl font-bold text-white mb-6">ESTEBAN <br><span class="text-orange-400 text-sm font-normal">Ops Strategy</span></h3>
+                    <ul class="space-y-3 text-slate-300 mb-8">
+                        <li class="flex items-start gap-2"><i data-lucide="shield" class="w-4 h-4 text-orange-500 mt-1"></i> Implementar/Mantener CRM y Dashboard</li>
+                        <li class="flex items-start gap-2"><i data-lucide="shield" class="w-4 h-4 text-orange-500 mt-1"></i> Documentar SOPs (Standard Operating Procedures)</li>
+                        <li class="flex items-start gap-2"><i data-lucide="shield" class="w-4 h-4 text-orange-500 mt-1"></i> Coordinar reunión semanal (Planning/Review)</li>
+                        <li class="flex items-start gap-2"><i data-lucide="shield" class="w-4 h-4 text-orange-500 mt-1"></i> Resolver fricciones interdepartamentales</li>
+                    </ul>
+                    <div class="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-xl">
+                        <p class="text-yellow-400 text-xs font-bold uppercase mb-1">Objetivo Operativo</p>
+                        <p class="text-slate-300 text-xs leading-relaxed">Liberar el 100% de la carga operativa para que el Director se enfoque exclusivamente en crecimiento exponencial.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WORKFLOW DIARIO DEL EQUIPO -->
+        <section class="mb-12">
+            <div class="bg-indigo-600 rounded-2xl p-6 shadow-xl mb-6 flex items-center gap-3">
+                <i data-lucide="calendar" class="w-8 h-8 text-white"></i>
+                <h2 class="text-2xl md:text-3xl font-bold text-white uppercase tracking-wider">Workflow Diario</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Kelly Workflow -->
+                <div class="glass rounded-2xl overflow-hidden border border-indigo-500/20">
+                    <div class="p-4 bg-indigo-500/10 border-b border-indigo-500/20 flex items-center gap-2">
+                        <i data-lucide="smartphone" class="w-5 h-5 text-indigo-400"></i>
+                        <h4 class="font-bold text-white text-sm">KELLY (CM & Calificación)</h4>
+                    </div>
+                    <div class="max-h-[400px] overflow-y-auto p-4 space-y-3 scroll-hide">
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>8:00 AM</span><span>30m</span></div>
+                            <p class="text-slate-200">Review DMs overnight + urgentes.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>8:30 AM</span><span>15m</span></div>
+                            <p class="text-slate-200">Publicar Reel del día.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>9:00 AM</span><span>1h</span></div>
+                            <p class="text-slate-200">Calificación BANT de nuevos DMs.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>10:00 AM</span><span>1h</span></div>
+                            <p class="text-slate-200">Nutrición y Agendamiento activo.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>2:00 PM</span><span>30m</span></div>
+                            <p class="text-slate-200">Publicar Historias interactivas.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>5:00 PM</span><span>30m</span></div>
+                            <p class="text-slate-200">Confirmar calls día siguiente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategists Workflow -->
+                <div class="glass rounded-2xl overflow-hidden border border-indigo-500/20">
+                    <div class="p-4 bg-indigo-500/10 border-b border-indigo-500/20 flex items-center gap-2">
+                        <i data-lucide="palette" class="w-5 h-5 text-indigo-400"></i>
+                        <h4 class="font-bold text-white text-sm">JORGE & ARNY (Estrategas)</h4>
+                    </div>
+                    <div class="max-h-[400px] overflow-y-auto p-4 space-y-3 scroll-hide">
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>9:00 AM</span><span>30m</span></div>
+                            <p class="text-slate-200">Análisis: ¿Qué generó más DMs ayer?</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>9:30 AM</span><span>2h</span></div>
+                            <p class="text-slate-200">Escribir 2-3 Guiones de alto impacto.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>11:30 AM</span><span>1h</span></div>
+                            <p class="text-slate-200">Historias con CTAs específicos.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>4:00 PM</span><span>1h</span></div>
+                            <p class="text-slate-200">Documentar insights y calendario.</p>
+                        </div>
+                        <div class="p-3 bg-yellow-400/10 border border-yellow-400/20 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-yellow-400"><span>Viernes</span><span>Tarde</span></div>
+                            <p class="text-slate-200">Validar estrategia con Jairo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jairo Workflow -->
+                <div class="glass rounded-2xl overflow-hidden border border-indigo-500/20">
+                    <div class="p-4 bg-indigo-500/10 border-b border-indigo-500/20 flex items-center gap-2">
+                        <i data-lucide="graduation-cap" class="w-5 h-5 text-indigo-400"></i>
+                        <h4 class="font-bold text-white text-sm">JAIRO (Mentor & Closer)</h4>
+                    </div>
+                    <div class="max-h-[400px] overflow-y-auto p-4 space-y-3 scroll-hide">
+                        <div class="p-3 bg-blue-400/10 border border-blue-400/20 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-blue-400"><span>L/M/V Morning</span><span>2h</span></div>
+                            <p class="text-slate-200 uppercase font-bold text-[9px]">Recording Batch</p>
+                            <p class="text-slate-300">Grabar 2-3 reels planificados.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>10:00 AM</span><span>1.5h</span></div>
+                            <p class="text-slate-200 font-bold">Mentoría Método LIDER #1</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>2:00 PM</span><span>1.5h</span></div>
+                            <p class="text-slate-200">Mentoría Cliente #2</p>
+                        </div>
+                        <div class="p-3 bg-green-400/10 border border-green-400/20 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-green-400"><span>Slot Tarde</span><span>1h</span></div>
+                            <p class="text-slate-200">Call de Ventas High-Ticket.</p>
+                        </div>
+                        <div class="p-3 bg-white/5 rounded-xl text-xs space-y-1">
+                            <div class="flex justify-between font-bold text-indigo-400"><span>5:00 PM</span><span>30m</span></div>
+                            <p class="text-slate-200">Feedback Loop a Kelly post-call.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BUSINESS FLOW (SOCIAL FUNNEL) -->
+        <section class="mb-12 glass p-10 rounded-3xl border border-white/10 shadow-2xl overflow-x-auto">
+            <h2 class="text-3xl font-bold text-white mb-10 text-center">Flujo de Negocio: Social Funnel</h2>
+            <div class="flex items-center justify-between min-w-[900px] gap-4 px-4">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center gap-4 text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+                        <i data-lucide="video" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold">1. Contenido</p>
+                        <p class="text-slate-400 text-[10px] uppercase font-bold mt-1 tracking-tighter">Attraction</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right" class="text-slate-700"></i>
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center gap-4 text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-cyan-600 flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform">
+                        <i data-lucide="message-square" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold">2. Calificación</p>
+                        <p class="text-slate-400 text-[10px] uppercase font-bold mt-1 tracking-tighter">Filtering</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right" class="text-slate-700"></i>
+                <!-- Step 3 -->
+                <div class="flex flex-col items-center gap-4 text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
+                        <i data-lucide="calendar" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold">3. Agendamiento</p>
+                        <p class="text-slate-400 text-[10px] uppercase font-bold mt-1 tracking-tighter">Setting</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right" class="text-slate-700"></i>
+                <!-- Step 4 -->
+                <div class="flex flex-col items-center gap-4 text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-green-600 flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
+                        <i data-lucide="dollar-sign" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold">4. Cierre</p>
+                        <p class="text-slate-400 text-[10px] uppercase font-bold mt-1 tracking-tighter">Closing</p>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right" class="text-slate-700"></i>
+                <!-- Step 5 -->
+                <div class="flex flex-col items-center gap-4 text-center group">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform">
+                        <i data-lucide="award" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-white font-bold">5. Servicio</p>
+                        <p class="text-slate-400 text-[10px] uppercase font-bold mt-1 tracking-tighter">Success</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ACTION PLAN -->
+        <section class="mb-12 bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 md:p-12 border border-slate-700 shadow-2xl relative overflow-hidden">
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-green-500/5 rounded-full -mb-32 -mr-32 blur-3xl"></div>
+            <div class="relative z-10">
+                <h2 class="text-4xl font-bold text-white mb-2 leading-tight">Plan de Acción Inmediato</h2>
+                <p class="text-slate-400 mb-10 text-lg uppercase tracking-widest font-bold">Semana 1-2: Estabilización y Crecimiento</p>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div>
+                        <h4 class="text-green-400 font-bold mb-6 flex items-center gap-2">
+                           <i data-lucide="play-circle"></i> ESTA SEMANA (Días 1-3)
+                        </h4>
+                        <ul class="space-y-4 text-slate-300">
+                            <li class="flex items-start gap-4">
+                                <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold">1</span>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Transferencia de Roles</p>
+                                    <p class="text-xs text-slate-400">Formalizar a Arny en CS y Kelly en CM Dual.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold">2</span>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Implementación CRM</p>
+                                    <p class="text-xs text-slate-400">Dashboard básico en Notion para tracking de leads.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold">3</span>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Scripts BANT</p>
+                                    <p class="text-xs text-slate-400">Crear guías de calificación exactas para Kelly.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-cyan-400 font-bold mb-6 flex items-center gap-2">
+                            <i data-lucide="rocket"></i> PRÓXIMA SEMANA (Días 4-7)
+                         </h4>
+                         <ul class="space-y-4 text-slate-300">
+                            <li class="flex items-start gap-4">
+                                <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold">4</span>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Contenido Conversacional</p>
+                                    <p class="text-xs text-slate-400">Lanzar 3 reels con CTA directo a mensajes(DM).</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold">5</span>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Testing Historias</p>
+                                    <p class="text-xs text-slate-400">Fomentar repuestas vía Polls con "Quiero saber más".</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-4">
+                                <span class="bg-slate-700 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 font-bold">6</span>
+                                <div>
+                                    <p class="font-bold text-white text-sm">Primera Review Semanal</p>
+                                    <p class="text-xs text-slate-400">Analizar métricas de DMs calificados vs generados.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center py-10">
+            <p class="text-slate-500 text-sm font-bold tracking-widest uppercase">SALES VELOCITY SYSTEM &copy; 2026</p>
+            <div class="mt-4 flex justify-center gap-6">
+                <i data-lucide="instagram" class="w-5 h-5 text-slate-600 hover:text-purple-400 transition-colors pointer-events-none"></i>
+                <i data-lucide="linkedin" class="w-5 h-5 text-slate-600 hover:text-blue-400 transition-colors pointer-events-none"></i>
+                <i data-lucide="globe" class="w-5 h-5 text-slate-600 hover:text-green-400 transition-colors pointer-events-none"></i>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
