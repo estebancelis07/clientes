@@ -1,0 +1,696 @@
+import React, { useState } from 'react';
+import { Users, Target, TrendingUp, MessageSquare, Video, Calendar, DollarSign, Settings, ChevronDown, ChevronRight } from 'lucide-react';
+
+const OrganigramaJairo = () => {
+  const [expandedAreas, setExpandedAreas] = useState({
+    operaciones: true,
+    marketing: true,
+    ventas: true,
+    servicio: true,
+    workflow: true
+  });
+
+  const toggleArea = (area) => {
+    setExpandedAreas(prev => ({
+      ...prev,
+      [area]: !prev[area]
+    }));
+  };
+
+  const areas = {
+    liderazgo: {
+      title: "LIDERAZGO ESTRATÉGICO",
+      color: "bg-purple-600",
+      roles: [
+        {
+          nombre: "ESTEBAN - Director General",
+          responsabilidades: [
+            "Dirección estratégica general del negocio",
+            "Supervisión de Marketing, Ventas y Servicio",
+            "Análisis de métricas y toma de decisiones",
+            "Coordinación entre áreas y resolución de bloqueos"
+          ],
+          kpis: ["Revenue mensual", "CAC", "Conversión por etapa", "Team performance"]
+        },
+        {
+          nombre: "JAIRO - Mentor & Closer",
+          responsabilidades: [
+            "Crear y grabar contenido (5-7 reels/semana)",
+            "Cerrar ventas en calls (30-40% conversión)",
+            "Entregar mentorías 1-a-1 con método LIDER",
+            "Validar estrategia de contenido con Jorge y Arny"
+          ],
+          kpis: ["Tasa de cierre", "NPS clientes", "Horas de mentoría", "Contenido creado/semana"]
+        }
+      ]
+    },
+    marketing: {
+      title: "MARKETING & CONTENIDO",
+      color: "bg-blue-600",
+      icon: TrendingUp,
+      cuelloBottella: true,
+      roles: [
+        {
+          nombre: "JORGE & ARNY - Estrategas de Contenido",
+          equipo: true,
+          responsabilidades: [
+            "Estrategia mensual de contenido orientada a conversión",
+            "Crear guiones de reels con CTAs claros para DM",
+            "Planear historias interactivas para generar conversaciones",
+            "Analizar qué contenido genera más leads calificados",
+            "Experimentar con formatos que aumenten volumen de DMs"
+          ],
+          kpis: ["Conversión Reel→DM", "DMs calificados/semana", "Engagement rate", "Story replies"],
+          prioridad: "CLAVE: Aumentar volumen de conversaciones"
+        },
+        {
+          nombre: "KELLY - Community Manager & Calificadora",
+          dobleFuncion: true,
+          responsabilidades: [
+            "Publicar reels e historias según calendario",
+            "FILTRAR Y CALIFICAR DMs (BANT: Budget, Authority, Need, Timing)",
+            "Nutrir leads calificados con contenido relevante",
+            "Agendar llamadas con leads listos para comprar",
+            "Interactuar en comentarios y construir comunidad"
+          ],
+          kpis: ["DMs respondidos/día", "Leads calificados/día", "Tasa agendamiento", "Response time <2h"],
+          nota: "Función dual crítica: Community + Calificación"
+        },
+        {
+          nombre: "JUAN CAMILO - Editor",
+          responsabilidades: [
+            "Editar 5-7 reels por semana optimizados por plataforma",
+            "Crear historias dinámicas con stickers/polls",
+            "Subtítulos, zoom-ins, efectos de retención",
+            "Turnaround <48h por pieza",
+            "Banco organizado de assets y B-rolls"
+          ],
+          kpis: ["Reels/semana (7+)", "Avg. views", "Retention rate", "Turnaround time"]
+        }
+      ]
+    },
+    ventas: {
+      title: "VENTAS & CONVERSIÓN",
+      color: "bg-green-600",
+      icon: DollarSign,
+      cuelloBottella: false,
+      roles: [
+        {
+          nombre: "KELLY - Calificadora & Agendadora",
+          responsabilidades: [
+            "Revisar DMs 3 veces al día (mañana, mediodía, tarde)",
+            "Aplicar criterios BANT para filtrar leads calificados",
+            "Nutrir con contenido específico según objeciones",
+            "Invitar a agendar solo leads con alta probabilidad",
+            "Confirmar asistencia 24h y 2h antes de call",
+            "Seguimiento a no-shows para reagendar"
+          ],
+          kpis: ["Leads calificados/día (meta: 2-3)", "Tasa agendamiento (20%)", "Show-up rate (70%+)", "Response time"],
+          nota: "Misma Kelly de CM - función integrada"
+        },
+        {
+          nombre: "JAIRO - Closer",
+          responsabilidades: [
+            "Calls de cierre con leads calificados (5-10/semana)",
+            "Presentar método LIDER y manejar objeciones",
+            "Cerrar venta $1,200",
+            "Dar feedback a Kelly sobre calidad de leads",
+            "Seguimiento post-call si están pensando"
+          ],
+          kpis: ["Tasa de cierre (30-40%)", "Calls/semana", "Ticket promedio", "Feedback loop con Kelly"]
+        }
+      ]
+    },
+    operaciones: {
+      title: "OPERACIONES & SERVICIO",
+      color: "bg-orange-600",
+      icon: Settings,
+      cuelloBottella: false,
+      roles: [
+        {
+          nombre: "ARNY - Customer Success Manager",
+          nuevaAsignacion: true,
+          responsabilidades: [
+            "Onboarding de clientes nuevos (bienvenida + kick-off)",
+            "Gestionar agenda de Jairo (coordinar horarios de mentoría)",
+            "Seguimiento quincenal de progreso de clientes",
+            "Recolectar testimonios y casos de éxito",
+            "Identificar oportunidades de renovación/upsell",
+            "Soporte general a clientes activos"
+          ],
+          kpis: ["NPS (9+/10)", "Testimonios/mes (2-3)", "Ocupación agenda Jairo (90%)", "Response time <4h"],
+          nota: "Transición de estratega a CS - usa conocimiento de marketing/ventas"
+        },
+        {
+          nombre: "ESTEBAN - Ops Manager (temporal)",
+          responsabilidades: [
+            "Implementar y mantener CRM/herramientas",
+            "Documentar procesos y crear SOPs",
+            "Coordinar reuniones semanales del equipo",
+            "Dashboard de métricas y reporting",
+            "Resolver bloqueos entre áreas"
+          ],
+          kpis: ["Uptime sistemas", "Procesos documentados", "Tiempo coordinación inter-áreas"],
+          objetivo: "Delegar ops para enfocarte 100% en estrategia"
+        }
+      ]
+    }
+  };
+
+  const workflowDiario = {
+    kelly: [
+      { hora: "8:00 AM", tarea: "Review DMs overnight + responder urgentes", tiempo: "30 min" },
+      { hora: "8:30 AM", tarea: "Publicar reel del día según calendario", tiempo: "15 min" },
+      { hora: "9:00 AM", tarea: "Calificar nuevos DMs con criterio BANT", tiempo: "1h" },
+      { hora: "10:00 AM", tarea: "Nutrir leads calificados + agendar calls", tiempo: "1h" },
+      { hora: "12:00 PM", tarea: "Check-in DMs mediodía", tiempo: "30 min" },
+      { hora: "2:00 PM", tarea: "Publicar historias interactivas", tiempo: "30 min" },
+      { hora: "3:00 PM", tarea: "Responder story replies y comentarios", tiempo: "1h" },
+      { hora: "5:00 PM", tarea: "Confirmar calls del día siguiente", tiempo: "30 min" },
+      { hora: "5:30 PM", tarea: "Actualizar CRM y dashboard", tiempo: "30 min" }
+    ],
+    jorgeArny: [
+      { hora: "9:00 AM", tarea: "Análisis de contenido: qué generó más DMs ayer", tiempo: "30 min" },
+      { hora: "9:30 AM", tarea: "Escribir guiones de 2-3 reels", tiempo: "2h" },
+      { hora: "11:30 AM", tarea: "Planear historias con CTAs específicos", tiempo: "1h" },
+      { hora: "1:00 PM", tarea: "Investigar tendencias y competencia", tiempo: "1h" },
+      { hora: "2:00 PM", tarea: "Coordinar con Juan Camilo sobre ediciones", tiempo: "30 min" },
+      { hora: "3:00 PM", tarea: "Validar estrategia semanal con Jairo", tiempo: "1h", frecuencia: "Viernes" },
+      { hora: "4:00 PM", tarea: "Documentar insights y ajustar calendario", tiempo: "1h" }
+    ],
+    juanCamilo: [
+      { hora: "9:00 AM", tarea: "Review material grabado por Jairo", tiempo: "30 min" },
+      { hora: "9:30 AM", tarea: "Editar reel #1 (con guion de Jorge/Arny)", tiempo: "2.5h" },
+      { hora: "12:00 PM", tarea: "Crear 3-4 historias dinámicas", tiempo: "1h" },
+      { hora: "2:00 PM", tarea: "Editar reel #2", tiempo: "2.5h" },
+      { hora: "4:30 PM", tarea: "Control de calidad y entregas", tiempo: "1h" },
+      { hora: "5:30 PM", tarea: "Organizar banco de assets", tiempo: "30 min" }
+    ],
+    jairo: [
+      { hora: "8:00 AM", tarea: "Grabar 2-3 reels (batch)", tiempo: "2h", frecuencia: "Lunes/Miércoles" },
+      { hora: "10:00 AM", tarea: "Mentoría cliente #1", tiempo: "1.5h" },
+      { hora: "2:00 PM", tarea: "Mentoría cliente #2", tiempo: "1.5h" },
+      { hora: "4:00 PM", tarea: "Call de ventas", tiempo: "1h", frecuencia: "Según agenda" },
+      { hora: "5:00 PM", tarea: "Feedback a Kelly sobre leads", tiempo: "30 min", frecuencia: "Diario post-call" },
+      { hora: "6:00 PM", tarea: "Validar estrategia con Jorge/Arny", tiempo: "1h", frecuencia: "Viernes" }
+    ],
+    arny: [
+      { hora: "9:00 AM", tarea: "Check-in con clientes activos (WhatsApp/email)", tiempo: "1h" },
+      { hora: "10:00 AM", tarea: "Onboarding cliente nuevo (si aplica)", tiempo: "1.5h" },
+      { hora: "12:00 PM", tarea: "Coordinar agenda de Jairo para próxima semana", tiempo: "30 min" },
+      { hora: "2:00 PM", tarea: "Seguimiento de progreso clientes", tiempo: "1h" },
+      { hora: "3:00 PM", tarea: "Solicitar testimonios/feedback", tiempo: "1h" },
+      { hora: "4:00 PM", tarea: "Preparar materiales de onboarding", tiempo: "1h" },
+      { hora: "5:00 PM", tarea: "Actualizar tablero de clientes", tiempo: "30 min" }
+    ],
+    esteban: [
+      { hora: "8:00 AM", tarea: "Review dashboard general de métricas", tiempo: "30 min" },
+      { hora: "9:00 AM", tarea: "1-on-1s con equipo (rotativo)", tiempo: "1-2h" },
+      { hora: "11:00 AM", tarea: "Análisis estratégico y ajustes", tiempo: "2h" },
+      { hora: "2:00 PM", tarea: "Resolver bloqueos operativos", tiempo: "1h" },
+      { hora: "3:00 PM", tarea: "Trabajo en sistemas/procesos", tiempo: "2h" },
+      { hora: "5:00 PM", tarea: "Planning estratégico próximos días", tiempo: "1h" }
+    ]
+  };
+
+  return (
+    <div className="w-full min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 mb-8 shadow-2xl">
+          <h1 className="text-4xl font-bold text-white mb-4">
+            Organigrama Negocio Jairo Osorio
+          </h1>
+          <p className="text-white/90 text-lg mb-2">
+            Mentoría High-Ticket ($1,200) · Método LIDER
+          </p>
+          <div className="flex gap-4 mt-4 flex-wrap">
+            <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+              <span className="text-white font-semibold">Meta: 3 → 8 clientes/mes</span>
+            </div>
+            <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+              <span className="text-white font-semibold">Team: 6 personas</span>
+            </div>
+            <div className="bg-white/20 backdrop-blur px-4 py-2 rounded-lg">
+              <span className="text-white font-semibold">Modelo: Social Funnel</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Liderazgo */}
+        <div className="mb-8">
+          <div className={`${areas.liderazgo.color} rounded-xl p-6 shadow-xl mb-4`}>
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <Users className="w-8 h-8" />
+              {areas.liderazgo.title}
+            </h2>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {areas.liderazgo.roles.map((rol, idx) => (
+              <div key={idx} className="bg-slate-800 rounded-xl p-6 border-2 border-purple-500/30 shadow-lg hover:shadow-purple-500/20 transition-all">
+                <h3 className="text-xl font-bold text-white mb-4">{rol.nombre}</h3>
+                <div className="mb-4">
+                  <p className="text-purple-400 font-semibold mb-2">Responsabilidades:</p>
+                  <ul className="space-y-1">
+                    {rol.responsabilidades.map((resp, i) => (
+                      <li key={i} className="text-slate-300 text-sm flex items-start gap-2">
+                        <span className="text-purple-400 mt-1">•</span>
+                        <span>{resp}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="text-purple-400 font-semibold mb-2">KPIs:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {rol.kpis.map((kpi, i) => (
+                      <span key={i} className="bg-purple-600/30 text-purple-200 px-3 py-1 rounded-full text-xs">
+                        {kpi}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Marketing */}
+        <div className="mb-8">
+          <button
+            onClick={() => toggleArea('marketing')}
+            className={`${areas.marketing.color} rounded-xl p-6 shadow-xl mb-4 w-full flex items-center justify-between hover:opacity-90 transition-opacity`}
+          >
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <TrendingUp className="w-8 h-8" />
+              {areas.marketing.title}
+            </h2>
+            {expandedAreas.marketing ? <ChevronDown className="w-6 h-6 text-white" /> : <ChevronRight className="w-6 h-6 text-white" />}
+          </button>
+          {expandedAreas.marketing && (
+            <div className="grid md:grid-cols-3 gap-4">
+              {areas.marketing.roles.map((rol, idx) => (
+                <div key={idx} className="bg-slate-800 rounded-xl p-6 border-2 border-blue-500/30 shadow-lg hover:shadow-blue-500/20 transition-all">
+                  <h3 className="text-lg font-bold text-white mb-4">{rol.nombre}</h3>
+                  <div className="mb-4">
+                    <p className="text-blue-400 font-semibold mb-2 text-sm">Responsabilidades:</p>
+                    <ul className="space-y-1">
+                      {rol.responsabilidades.map((resp, i) => (
+                        <li key={i} className="text-slate-300 text-sm flex items-start gap-2">
+                          <span className="text-blue-400 mt-1">•</span>
+                          <span>{resp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-blue-400 font-semibold mb-2 text-sm">KPIs:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {rol.kpis.map((kpi, i) => (
+                        <span key={i} className="bg-blue-600/30 text-blue-200 px-2 py-1 rounded-full text-xs">
+                          {kpi}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Ventas - CON ALERTA */}
+        <div className="mb-8">
+          <button
+            onClick={() => toggleArea('ventas')}
+            className={`${areas.ventas.color} rounded-xl p-6 shadow-xl mb-4 w-full flex items-center justify-between hover:opacity-90 transition-opacity relative`}
+          >
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <DollarSign className="w-8 h-8" />
+              {areas.ventas.title}
+              <span className="bg-red-500 text-white text-xs px-3 py-1 rounded-full animate-pulse">
+                CUELLO DE BOTELLA
+              </span>
+            </h2>
+            {expandedAreas.ventas ? <ChevronDown className="w-6 h-6 text-white" /> : <ChevronRight className="w-6 h-6 text-white" />}
+          </button>
+          {expandedAreas.ventas && (
+            <div className="grid md:grid-cols-2 gap-4">
+              {areas.ventas.roles.map((rol, idx) => (
+                <div key={idx} className={`bg-slate-800 rounded-xl p-6 border-2 shadow-lg hover:shadow-green-500/20 transition-all ${rol.prioridad === 'URGENTE' ? 'border-red-500 ring-2 ring-red-500/50' : 'border-green-500/30'}`}>
+                  {rol.prioridad === 'URGENTE' && (
+                    <div className="bg-red-500 text-white px-3 py-1 rounded-lg mb-3 text-sm font-bold inline-block">
+                      ⚠️ CONTRATAR URGENTE
+                    </div>
+                  )}
+                  <h3 className="text-lg font-bold text-white mb-4">{rol.nombre}</h3>
+                  {rol.perfil && (
+                    <div className="mb-3 p-3 bg-green-900/30 rounded-lg border border-green-500/30">
+                      <p className="text-green-300 text-sm font-semibold">Perfil ideal:</p>
+                      <p className="text-slate-300 text-sm">{rol.perfil}</p>
+                    </div>
+                  )}
+                  <div className="mb-4">
+                    <p className="text-green-400 font-semibold mb-2 text-sm">Responsabilidades:</p>
+                    <ul className="space-y-1">
+                      {rol.responsabilidades.map((resp, i) => (
+                        <li key={i} className="text-slate-300 text-sm flex items-start gap-2">
+                          <span className="text-green-400 mt-1">•</span>
+                          <span>{resp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-green-400 font-semibold mb-2 text-sm">KPIs:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {rol.kpis.map((kpi, i) => (
+                        <span key={i} className="bg-green-600/30 text-green-200 px-2 py-1 rounded-full text-xs">
+                          {kpi}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Operaciones */}
+        <div className="mb-8">
+          <button
+            onClick={() => toggleArea('operaciones')}
+            className={`${areas.operaciones.color} rounded-xl p-6 shadow-xl mb-4 w-full flex items-center justify-between hover:opacity-90 transition-opacity`}
+          >
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <Settings className="w-8 h-8" />
+              {areas.operaciones.title}
+            </h2>
+            {expandedAreas.operaciones ? <ChevronDown className="w-6 h-6 text-white" /> : <ChevronRight className="w-6 h-6 text-white" />}
+          </button>
+          {expandedAreas.operaciones && (
+            <div className="grid md:grid-cols-2 gap-4">
+              {areas.operaciones.roles.map((rol, idx) => (
+                <div key={idx} className="bg-slate-800 rounded-xl p-6 border-2 border-orange-500/30 shadow-lg hover:shadow-orange-500/20 transition-all">
+                  <h3 className="text-lg font-bold text-white mb-2">{rol.nombre}</h3>
+                  {rol.nuevaFuncion && (
+                    <div className="mb-3 p-2 bg-orange-900/30 rounded-lg border border-orange-500/30">
+                      <p className="text-orange-300 text-sm">
+                        <span className="font-semibold">Nueva función:</span> {rol.nuevaFuncion}
+                      </p>
+                      {rol.conocimiento && (
+                        <p className="text-slate-400 text-xs mt-1">Tiene: {rol.conocimiento}</p>
+                      )}
+                    </div>
+                  )}
+                  <div className="mb-4">
+                    <p className="text-orange-400 font-semibold mb-2 text-sm">Responsabilidades:</p>
+                    <ul className="space-y-1">
+                      {rol.responsabilidades.map((resp, i) => (
+                        <li key={i} className="text-slate-300 text-sm flex items-start gap-2">
+                          <span className="text-orange-400 mt-1">•</span>
+                          <span>{resp}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-orange-400 font-semibold mb-2 text-sm">KPIs:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {rol.kpis.map((kpi, i) => (
+                        <span key={i} className="bg-orange-600/30 text-orange-200 px-2 py-1 rounded-full text-xs">
+                          {kpi}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Workflow Diario */}
+        <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 shadow-2xl">
+          <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
+            <Calendar className="w-8 h-8" />
+            Workflow Diario del Equipo
+          </h2>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Kelly */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5">
+              <h3 className="text-white font-bold mb-3 text-lg">📱 KELLY (CM + Calificadora)</h3>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {workflowDiario.kelly.map((item, idx) => (
+                  <div key={idx} className="bg-white/5 rounded-lg p-2 border border-white/10">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="text-blue-300 font-semibold text-sm">{item.hora}</span>
+                      <span className="text-white/60 text-xs">{item.tiempo}</span>
+                    </div>
+                    <p className="text-white/90 text-xs">{item.tarea}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Jorge & Arny */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5">
+              <h3 className="text-white font-bold mb-3 text-lg">🎯 JORGE & ARNY (Estrategas)</h3>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {workflowDiario.jorgeArny.map((item, idx) => (
+                  <div key={idx} className="bg-white/5 rounded-lg p-2 border border-white/10">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="text-blue-300 font-semibold text-sm">{item.hora}</span>
+                      <span className="text-white/60 text-xs">{item.tiempo}</span>
+                    </div>
+                    <p className="text-white/90 text-xs">{item.tarea}</p>
+                    {item.frecuencia && (
+                      <span className="text-yellow-300 text-xs">• {item.frecuencia}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Juan Camilo */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5">
+              <h3 className="text-white font-bold mb-3 text-lg">🎬 JUAN CAMILO (Editor)</h3>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {workflowDiario.juanCamilo.map((item, idx) => (
+                  <div key={idx} className="bg-white/5 rounded-lg p-2 border border-white/10">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="text-blue-300 font-semibold text-sm">{item.hora}</span>
+                      <span className="text-white/60 text-xs">{item.tiempo}</span>
+                    </div>
+                    <p className="text-white/90 text-xs">{item.tarea}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Jairo */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5">
+              <h3 className="text-white font-bold mb-3 text-lg">🎓 JAIRO (Mentor + Closer)</h3>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {workflowDiario.jairo.map((item, idx) => (
+                  <div key={idx} className="bg-white/5 rounded-lg p-2 border border-white/10">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="text-blue-300 font-semibold text-sm">{item.hora}</span>
+                      <span className="text-white/60 text-xs">{item.tiempo}</span>
+                    </div>
+                    <p className="text-white/90 text-xs">{item.tarea}</p>
+                    {item.frecuencia && (
+                      <span className="text-yellow-300 text-xs">• {item.frecuencia}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Arny */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5">
+              <h3 className="text-white font-bold mb-3 text-lg">💼 ARNY (CS Manager)</h3>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {workflowDiario.arny.map((item, idx) => (
+                  <div key={idx} className="bg-white/5 rounded-lg p-2 border border-white/10">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="text-blue-300 font-semibold text-sm">{item.hora}</span>
+                      <span className="text-white/60 text-xs">{item.tiempo}</span>
+                    </div>
+                    <p className="text-white/90 text-xs">{item.tarea}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Esteban */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5">
+              <h3 className="text-white font-bold mb-3 text-lg">⚡ ESTEBAN (Director)</h3>
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {workflowDiario.esteban.map((item, idx) => (
+                  <div key={idx} className="bg-white/5 rounded-lg p-2 border border-white/10">
+                    <div className="flex justify-between items-start mb-1">
+                      <span className="text-blue-300 font-semibold text-sm">{item.hora}</span>
+                      <span className="text-white/60 text-xs">{item.tiempo}</span>
+                    </div>
+                    <p className="text-white/90 text-xs">{item.tarea}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Flujo del Negocio */}
+        <div className="mt-8 bg-slate-800 rounded-2xl p-8 shadow-2xl border-2 border-slate-700">
+          <h2 className="text-3xl font-bold text-white mb-6">Flujo del Negocio (Social Funnel)</h2>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex-1 bg-blue-900/30 rounded-xl p-4 border-2 border-blue-500">
+              <Video className="w-8 h-8 text-blue-400 mb-2" />
+              <h3 className="text-white font-bold mb-1">1. Contenido</h3>
+              <p className="text-slate-300 text-sm">Reels + Historias → DMs</p>
+              <p className="text-slate-400 text-xs">Jorge/Arny estrategia, Juan edita, Kelly publica</p>
+            </div>
+            <div className="text-slate-500 text-2xl">→</div>
+            <div className="flex-1 bg-green-900/30 rounded-xl p-4 border-2 border-green-500">
+              <MessageSquare className="w-8 h-8 text-green-400 mb-2" />
+              <h3 className="text-white font-bold mb-1">2. Calificación</h3>
+              <p className="text-slate-300 text-sm">Kelly filtra con BANT</p>
+              <p className="text-slate-400 text-xs">3 checks diarios de DMs</p>
+            </div>
+            <div className="text-slate-500 text-2xl">→</div>
+            <div className="flex-1 bg-purple-900/30 rounded-xl p-4 border-2 border-purple-500">
+              <Calendar className="w-8 h-8 text-purple-400 mb-2" />
+              <h3 className="text-white font-bold mb-1">3. Agendamiento</h3>
+              <p className="text-slate-300 text-sm">Kelly agenda + confirma</p>
+              <p className="text-slate-400 text-xs">Solo leads calificados</p>
+            </div>
+            <div className="text-slate-500 text-2xl">→</div>
+            <div className="flex-1 bg-yellow-900/30 rounded-xl p-4 border-2 border-yellow-500">
+              <DollarSign className="w-8 h-8 text-yellow-400 mb-2" />
+              <h3 className="text-white font-bold mb-1">4. Cierre</h3>
+              <p className="text-slate-300 text-sm">Jairo cierra (30-40%)</p>
+              <p className="text-slate-400 text-xs">$1,200/cliente</p>
+            </div>
+            <div className="text-slate-500 text-2xl">→</div>
+            <div className="flex-1 bg-orange-900/30 rounded-xl p-4 border-2 border-orange-500">
+              <Users className="w-8 h-8 text-orange-400 mb-2" />
+              <h3 className="text-white font-bold mb-1">5. Servicio</h3>
+              <p className="text-slate-300 text-sm">Arny + Jairo entregan</p>
+              <p className="text-slate-400 text-xs">Mentoría método LIDER</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Cuellos de Botella y Soluciones */}
+        <div className="mt-8 bg-gradient-to-r from-red-600 to-pink-600 rounded-2xl p-8 shadow-2xl">
+          <h2 className="text-3xl font-bold text-white mb-6">🚨 Cuellos de Botella Identificados</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Cuello 1 */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="bg-red-500 rounded-full p-2">
+                  <span className="text-white font-bold text-lg">1</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-2">Falta de Claridad en Roles</h3>
+                  <p className="text-white/80 text-sm mb-3">
+                    No hay checklists diarios claros. El equipo no sabe exactamente qué hacer cada día ni cómo coordinar entre áreas.
+                  </p>
+                  <div className="bg-green-500/20 rounded-lg p-3 border border-green-500/30">
+                    <p className="text-green-300 font-semibold text-sm mb-1">✅ Solución:</p>
+                    <ul className="text-green-200 text-xs space-y-1">
+                      <li>• Workflow diario definido para cada persona (ver arriba)</li>
+                      <li>• Reuniones semanales: Lunes (planning), Viernes (review)</li>
+                      <li>• Dashboard compartido con tareas y KPIs</li>
+                      <li>• SOPs documentados en Notion</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Cuello 2 */}
+            <div className="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20">
+              <div className="flex items-start gap-3 mb-4">
+                <div className="bg-red-500 rounded-full p-2">
+                  <span className="text-white font-bold text-lg">2</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white mb-2">Bajo Volumen de DMs Calificados</h3>
+                  <p className="text-white/80 text-sm mb-3">
+                    El contenido actual no genera suficientes conversaciones de calidad. Kelly no tiene qué calificar.
+                  </p>
+                  <div className="bg-green-500/20 rounded-lg p-3 border border-green-500/30">
+                    <p className="text-green-300 font-semibold text-sm mb-1">✅ Solución:</p>
+                    <ul className="text-green-200 text-xs space-y-1">
+                      <li>• Jorge/Arny: Reels con CTAs específicos a DM</li>
+                      <li>• Historias interactivas diarias (polls, preguntas, tests)</li>
+                      <li>• Contenido de "dolor" que resuene con ideal client</li>
+                      <li>• Experimentar 3-5 formatos nuevos por semana</li>
+                      <li>• Analizar qué contenido genera más conversaciones calificadas</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Próximos Pasos */}
+        <div className="mt-8 bg-gradient-to-r from-green-600 to-teal-600 rounded-2xl p-8 shadow-2xl">
+          <h2 className="text-3xl font-bold text-white mb-6">🚀 Plan de Acción Inmediato (Semana 1-2)</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+              <h3 className="text-white font-bold mb-3">✅ Esta Semana (Días 1-3):</h3>
+              <ul className="space-y-2 text-white/90 text-sm">
+                <li>• Reunión con equipo completo: presentar organigrama y roles</li>
+                <li>• Asignar Arny oficialmente como CS Manager</li>
+                <li>• Cada persona confirma su workflow diario</li>
+                <li>• Implementar CRM básico (Notion o Google Sheets)</li>
+                <li>• Kelly: Crear script de calificación BANT</li>
+                <li>• Jorge/Arny: Planning de contenido orientado a generar DMs</li>
+              </ul>
+            </div>
+            <div className="bg-white/10 backdrop-blur rounded-xl p-4">
+              <h3 className="text-white font-bold mb-3">🎯 Próxima Semana (Días 4-7):</h3>
+              <ul className="space-y-2 text-white/90 text-sm">
+                <li>• Lanzar nuevo tipo de contenido con CTA directo a DM</li>
+                <li>• Kelly empieza calificación activa 3x/día</li>
+                <li>• Experimentar con 3 formatos de historias interactivas</li>
+                <li>• Primera reunión semanal: Lunes 9am (planning)</li>
+                <li>• Review viernes: analizar qué contenido generó más DMs</li>
+                <li>• Documentar procesos en Notion</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="mt-6 bg-yellow-500/20 rounded-xl p-4 border-2 border-yellow-500/50">
+            <h3 className="text-yellow-300 font-bold mb-2 text-lg">⚡ Prioridad #1: Aumentar Volumen de DMs</h3>
+            <p className="text-white/90 text-sm mb-3">
+              Jorge y Arny deben experimentar agresivamente con contenido que genere conversaciones. Meta: De 5-10 DMs/día a 20-30 DMs/día en 2 semanas.
+            </p>
+            <div className="grid md:grid-cols-3 gap-3">
+              <div className="bg-white/10 rounded p-3">
+                <p className="text-white font-semibold text-xs mb-1">Formato 1: Pain Point</p>
+                <p className="text-white/70 text-xs">Reel sobre problema específico + "¿Te pasa?" en caption</p>
+              </div>
+              <div className="bg-white/10 rounded p-3">
+                <p className="text-white font-semibold text-xs mb-1">Formato 2: Resultado</p>
+                <p className="text-white/70 text-xs">Caso de éxito + "¿Quieres saber cómo? Escríbeme"</p>
+              </div>
+              <div className="bg-white/10 rounded p-3">
+                <p className="text-white font-semibold text-xs mb-1">Formato 3: Historias</p>
+                <p className="text-white/70 text-xs">Poll/pregunta diaria relevante al ICP</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default OrganigramaJairo;
